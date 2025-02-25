@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="LightBlue" Offset="0.0"/>
+                <GradientStop Color="DarkBlue" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <!-- Main Grid Layout -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
@@ -20,15 +26,76 @@
         </Grid.RowDefinitions>
 
         <!-- Left Sidebar for Game List -->
-        <StackPanel Grid.Column="0" Background="#f0f0f0" Margin="5" Height="Auto">
+        <!--<StackPanel Grid.Column="0" Background="#f0f0f0" Margin="5" Height="Auto">
             <TextBlock Text="Game List" FontSize="20" FontWeight="Bold" Margin="10"/>
             <ListBox x:Name="GameListBox" Height="204" SelectionChanged="GameListBox_SelectionChanged">
                 <ListBoxItem Content="Math Game" Height="50"/>
                 <ListBoxItem Content="English Game" Height="50"/>
-                <ListBoxItem Content="Run to Win" Height="50"/>
+                <ListBoxItem Content="Run Game" Height="50"/>
                 <ListBoxItem Content="Balloon Pop Game" Height="50"/>
             </ListBox>
+        </StackPanel>-->
+        <StackPanel Grid.Column="0"
+            Background="#E6EAF0"
+            Margin="10"
+            Height="Auto">
+
+            <TextBlock Text="🎮 Game List"
+               FontSize="22"
+               FontWeight="Bold"
+               Foreground="#283E51"
+               Margin="0,0,0,10"
+               TextAlignment="Center"/>
+
+            <ListBox x:Name="GameListBox"
+             Height="300"
+             Background="White"
+             BorderBrush="Transparent"
+             Padding="5"
+             ScrollViewer.VerticalScrollBarVisibility="Auto"
+             SelectionChanged="GameListBox_SelectionChanged">
+
+                <!-- Hover Effect -->
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#283E51"/>
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4B79A1"/>
+                                <Setter Property="Foreground" Value="#0077b6"/>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="Black" Opacity="0.5" BlurRadius="10"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#00C853"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <!-- Game List Items -->
+                <ListBoxItem Content="Math Game"/>
+                <ListBoxItem Content="English Game"/>
+                <ListBoxItem Content="Run Game"/>
+                <ListBoxItem Content="Balloon Pop Game"/>
+            </ListBox>
         </StackPanel>
+
 
         <!-- Main Content Area -->
         <StackPanel Grid.Column="1" Margin="10">
@@ -36,13 +103,118 @@
             <Image x:Name="GameImage" Height="300" Stretch="Uniform" Margin="0,0,0,10"/>
 
             <!-- Game Description -->
-            <TextBlock x:Name="GameDescription" Text="Select a game to see details..." FontSize="16" TextWrapping="Wrap" Margin="0,0,0,10" Height="100"/>
+            <TextBlock x:Name="GameDescription" Text="Select a game to see more details..." FontSize="16" TextWrapping="Wrap" Margin="0,0,0,10" Height="100" Foreground="White"/>
 
             <!-- Download and Play Buttons -->
+            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Download" Width="150" Margin="5" Click="DownloadGame_Click" Height="40" Background=""/>
+                <Button Content="Play" Width="150" Margin="5" Click="PlayGame_Click" Height="40"/>
+            </StackPanel>-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Download" Width="100" Margin="5" Click="DownloadGame_Click"/>
-                <Button Content="Play" Width="100" Margin="5" Click="PlayGame_Click"/>
+                <!-- Download Button -->
+                <Button Content="Download"
+                        Width="150"
+                        Height="40"
+                        Margin="5"
+                        Click="DownloadGame_Click"
+                        Background="#4B79A1"
+                        Foreground="White"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Cursor="Hand"
+                        BorderBrush="Transparent">  
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#4B79A1"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="Black" Opacity="0.4" BlurRadius="8"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border CornerRadius="10"
+                                    Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <!-- Hover Effect -->
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#355C7D"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect Color="Black" Opacity="0.6" BlurRadius="12"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#283E51"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- Play Button -->
+                <Button Content="Play"
+                        Width="150"
+                        Height="40"
+                        Margin="5"
+                        Click="PlayGame_Click"
+                        Background="#00C853"
+                        Foreground="White"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Cursor="Hand"
+                        BorderBrush="Transparent">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#00C853"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="Black" Opacity="0.4" BlurRadius="8"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border CornerRadius="10"
+                                    Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <!-- Hover Effect -->
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#009624"/>
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect Color="Black" Opacity="0.6" BlurRadius="12"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#006400"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
+
         </StackPanel>
     </Grid>
 </Window>

@@ -39,7 +39,7 @@ namespace IFLEGameLauncher
                     GameDescription.Text = "Learn English by identifying objects and words!";
                     break;
 
-                case "Run to Win":
+                case "Run Game":
                     path = System.IO.Path.GetFullPath("Images/run.jpg");
                     GameImage.Source = new BitmapImage(new Uri(path));
                     GameDescription.Text = "Run, avoid obstacles, and reach the finish line!";
@@ -80,7 +80,7 @@ namespace IFLEGameLauncher
                 {
                     string gamePath = gameName switch
                     {
-                        "Math Game" => "Games/MathGame.exe",
+                        "Math Game" => "C:\\Users\\PC\\Desktop\\english-game\\exe\\english-game-unity.exe",
                         "English Game" => "Games/EnglishGame.exe",
                         "Run to Win" => "Games/RunToWin.exe",
                         "Jump Game" => "Games/JumpGame.exe",
