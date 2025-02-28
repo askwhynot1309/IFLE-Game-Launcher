@@ -9,35 +9,57 @@ using System.Windows.Media.Imaging;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Newtonsoft.Json;
 
 namespace IFLEGameLauncher
 {
     public partial class MainWindow : Window
     {
-        private string selectedDownloadFolder = GetDefaultDownloadPath(); // Set default on startup
+        private string selectedDownloadFolder;
+        private static string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            selectedDownloadFolder = LoadDownloadPath();
+        }
+        private static string LoadDownloadPath()
+        {
+            try
+            {
+                if (File.Exists(settingsFilePath))
+                {
+                    string json = File.ReadAllText(settingsFilePath);
+                    var settings = JsonConvert.DeserializeObject<Settings>(json);
+
+                    if (!string.IsNullOrEmpty(settings?.DownloadFolder) && Directory.Exists(settings.DownloadFolder))
+                    {
+                        return settings.DownloadFolder;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading settings: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            // If no valid path is found, return the default
+            return GetDefaultDownloadPath();
+        }
 
         private static string GetDefaultDownloadPath()
         {
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string gamesFolder = Path.Combine(desktopPath, "IFLE", "Games");
 
-            string ifleFolder = Path.Combine(desktopPath, "IFLE");
-
-            string gamesFolder = Path.Combine(ifleFolder, "Games");
 
             // Create directories if they don’t exist yet !@
-            if (!Directory.Exists(ifleFolder))
-                Directory.CreateDirectory(ifleFolder);
-
             if (!Directory.Exists(gamesFolder))
                 Directory.CreateDirectory(gamesFolder);
 
             return gamesFolder;
         }
 
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
 
         private void GameListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -240,6 +262,7 @@ namespace IFLEGameLauncher
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 selectedDownloadFolder = dialog.FileName;
+                SaveDownloadPath(selectedDownloadFolder);
                 MessageBox.Show($"Download folder set to:\n{selectedDownloadFolder}", "Download Location", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
@@ -247,6 +270,29 @@ namespace IFLEGameLauncher
         {
             //MessageBox.Show($"Current location: { selectedDownloadFolder}");
             ChooseDownloadLocation();
+        }
+
+        private static void SaveDownloadPath(string path)
+        {
+            try
+            {
+                var settings = new Settings { DownloadFolder = path };
+                string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
+
+                //string message = $"Saving to: {settingsFilePath}\n\nJSON Content:\n{json}";
+                //MessageBox.Show(message, "Saving Settings", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                File.WriteAllText(settingsFilePath, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving settings: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        class Settings
+        {
+            public string DownloadFolder { get; set; }
         }
     }
 }
