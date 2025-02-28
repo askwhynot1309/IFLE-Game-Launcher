@@ -8,11 +8,14 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace IFLEGameLauncher
 {
     public partial class MainWindow : Window
     {
+        private string selectedDownloadFolder;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -65,10 +68,16 @@ namespace IFLEGameLauncher
 
         private void PlayGame_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(selectedDownloadFolder))
+            {
+                MessageBox.Show("Please choose a download folder first!", "No Folder Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (GameListBox.SelectedItem is ListBoxItem selectedItem)
             {
                 string gameName = selectedItem.Content.ToString();
-                string gameFolder = Path.Combine(@"C:\Users\PC\Desktop\Games\", gameName.Replace(" ", ""));
+                string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
 
                 string exePath = FindGameExecutable(gameFolder);
 
@@ -96,11 +105,17 @@ namespace IFLEGameLauncher
 
         private async void DownloadGame_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(selectedDownloadFolder))
+            {
+                MessageBox.Show("Please choose a download folder first!", "No Folder Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (GameListBox.SelectedItem is ListBoxItem selectedItem)
             {
                 string gameName = selectedItem.Content.ToString();
                 string downloadUrl = GetDownloadUrl(gameName);
-                string gameFolder = Path.Combine(@"C:\Users\PC\Desktop\Games\", gameName.Replace(" ", ""));
+                string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
 
                 if (string.IsNullOrEmpty(downloadUrl))
                 {
@@ -112,6 +127,8 @@ namespace IFLEGameLauncher
             }
         }
 
+
+        //test download API
         private string GetDownloadUrl(string gameName)
         {
             return gameName switch
@@ -190,6 +207,25 @@ namespace IFLEGameLauncher
             {
                 MessageBox.Show($"Error extracting ZIP: {ex.Message}", "Extraction Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void ChooseDownloadLocation()
+        {
+            var dialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true, // Enables folder selection mode
+                Title = "Select a Folder to Download Games"
+            };
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                selectedDownloadFolder = dialog.FileName;
+                MessageBox.Show($"Download folder set to:\n{selectedDownloadFolder}", "Download Location", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        private void ChooseDownloadLocation_Click(object sender, RoutedEventArgs e)
+        {
+            ChooseDownloadLocation();
         }
     }
 }

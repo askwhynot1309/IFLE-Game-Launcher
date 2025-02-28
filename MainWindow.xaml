@@ -48,7 +48,7 @@
                TextAlignment="Center"/>
 
             <ListBox x:Name="GameListBox"
-             Height="300"
+             Height="374"
              Background="White"
              BorderBrush="Transparent"
              Padding="5"
@@ -94,6 +94,38 @@
                 <ListBoxItem Content="Run Game"/>
                 <ListBoxItem Content="Balloon Pop Game"/>
             </ListBox>
+
+            <Button Content="Choose Download Location" Background="#4B79A1" Height="59" Foreground="White" FontSize="16" Click="ChooseDownloadLocation_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#4B79A1"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect Color="Black" Opacity="0.4" BlurRadius="8"/>
+                            </Setter.Value>
+                        </Setter>
+
+                        <!-- Hover Effect -->
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#355C7D"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="Black" Opacity="0.6" BlurRadius="12"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#283E51"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
         </StackPanel>
 
 
@@ -105,11 +137,6 @@
             <!-- Game Description -->
             <TextBlock x:Name="GameDescription" Text="Select a game to see more details..." FontSize="16" TextWrapping="Wrap" Margin="0,0,0,10" Height="100" Foreground="White"/>
 
-            <!-- Download and Play Buttons -->
-            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Download" Width="150" Margin="5" Click="DownloadGame_Click" Height="40" Background=""/>
-                <Button Content="Play" Width="150" Margin="5" Click="PlayGame_Click" Height="40"/>
-            </StackPanel>-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <!-- Download Button -->
                 <Button Content="Download"
