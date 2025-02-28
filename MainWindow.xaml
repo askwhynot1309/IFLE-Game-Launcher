@@ -95,7 +95,7 @@
                 <ListBoxItem Content="Balloon Pop Game"/>
             </ListBox>
 
-            <Button Content="Choose Download Location" Background="#4B79A1" Height="59" Foreground="White" FontSize="16" Click="ChooseDownloadLocation_Click">
+            <Button Content="Choose Download Location" Background="#3776A1" Height="59" Foreground="White" FontSize="16" Click="ChooseDownloadLocation_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="#4B79A1"/>

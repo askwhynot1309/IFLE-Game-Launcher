@@ -14,7 +14,25 @@ namespace IFLEGameLauncher
 {
     public partial class MainWindow : Window
     {
-        private string selectedDownloadFolder;
+        private string selectedDownloadFolder = GetDefaultDownloadPath(); // Set default on startup
+
+        private static string GetDefaultDownloadPath()
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            string ifleFolder = Path.Combine(desktopPath, "IFLE");
+
+            string gamesFolder = Path.Combine(ifleFolder, "Games");
+
+            // Create directories if they don’t exist yet !@
+            if (!Directory.Exists(ifleFolder))
+                Directory.CreateDirectory(ifleFolder);
+
+            if (!Directory.Exists(gamesFolder))
+                Directory.CreateDirectory(gamesFolder);
+
+            return gamesFolder;
+        }
 
         public MainWindow()
         {
@@ -117,6 +135,8 @@ namespace IFLEGameLauncher
                 string downloadUrl = GetDownloadUrl(gameName);
                 string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
 
+                MessageBox.Show($"Game will be download to: {selectedDownloadFolder}");
+                
                 if (string.IsNullOrEmpty(downloadUrl))
                 {
                     MessageBox.Show("Download URL not found for the selected game.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -168,7 +188,6 @@ namespace IFLEGameLauncher
                 }
 
                 // Extract ZIP
-                //ZipFile.ExtractToDirectory(zipPath, gameFolder, true);
                 ExtractZipFile(zipPath, gameFolder);
                 File.Delete(zipPath); 
 
@@ -214,7 +233,8 @@ namespace IFLEGameLauncher
             var dialog = new CommonOpenFileDialog
             {
                 IsFolderPicker = true, // Enables folder selection mode
-                Title = "Select a Folder to Download Games"
+                Title = "Select a Folder to Download Games",
+                InitialDirectory = selectedDownloadFolder,
             };
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
@@ -225,6 +245,7 @@ namespace IFLEGameLauncher
         }
         private void ChooseDownloadLocation_Click(object sender, RoutedEventArgs e)
         {
+            //MessageBox.Show($"Current location: { selectedDownloadFolder}");
             ChooseDownloadLocation();
         }
     }
