@@ -16,12 +16,15 @@ namespace IFLEGameLauncher
     public partial class MainWindow : Window
     {
         private string selectedDownloadFolder;
+        private List<Game> games = new List<Game>();
         private static string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
 
         public MainWindow()
         {
             InitializeComponent();
+            LoadGameData();
             selectedDownloadFolder = LoadDownloadPath();
+            DownloadPathText.Text = selectedDownloadFolder;
         }
         private static string LoadDownloadPath()
         {
@@ -59,50 +62,72 @@ namespace IFLEGameLauncher
 
             return gamesFolder;
         }
+        private async void LoadGameData()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    string apiUrl = "https://localhost:7000/api/get-game-info";
 
+                    HttpResponseMessage response = await client.GetAsync(apiUrl);
+                    response.EnsureSuccessStatusCode();
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    games = JsonConvert.DeserializeObject<List<Game>>(responseData);
+
+                    GameListBox.Items.Clear();
+                    GameListBox.ItemsSource = games.Select(g => g.Title).ToList();
+                    //foreach (var game in games)
+                    //{
+                    //    GameListBox.Items.Add(game.Title);
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error fetching game data: {ex.Message}");
+            }
+        }
 
         private void GameListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (GameListBox.SelectedItem is ListBoxItem selectedItem)
+            if (GameListBox.SelectedItem is string selectedGameTitle)
             {
-                string gameName = selectedItem.Content.ToString();
-                UpdateGameDetails(gameName);
+                var selectedGame = games.FirstOrDefault(g => g.Title == selectedGameTitle);
+                if (selectedGame != null)
+                {
+                    GameImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("Images/balloon.jpg")));
+                    GameDescription.Text = selectedGame.Description;
+                }
+                else
+                {
+                    GameDescription.Text = "Select a game to see details.";
+                }
             }
         }
 
         private void UpdateGameDetails(string gameName)
         {
-            string path;
-            switch (gameName)
+            var selectedGame = games.FirstOrDefault(g => g.Title == gameName);
+            if (selectedGame != null)
             {
-                case "Math Game":
-                    path = System.IO.Path.GetFullPath("Images/math.jpg");
-                    GameImage.Source = new BitmapImage(new Uri(path));
-                    GameDescription.Text = "Solve math equations and improve your skills!";
-                    break;
-
-                case "English Game":
-                    path = System.IO.Path.GetFullPath("Images/english.jpg");
-                    GameImage.Source = new BitmapImage(new Uri(path));
-                    GameDescription.Text = "Learn English by identifying objects and words!";
-                    break;
-
-                case "Run Game":
-                    path = System.IO.Path.GetFullPath("Images/run.jpg");
-                    GameImage.Source = new BitmapImage(new Uri(path));
-                    GameDescription.Text = "Run, avoid obstacles, and reach the finish line!";
-                    break;
-
-                case "Balloon Pop Game":
-                    path = System.IO.Path.GetFullPath("Images/balloon.jpg");
-                    GameImage.Source = new BitmapImage(new Uri(path));
-                    GameDescription.Text = "Pop the balloon, BEWARE of the bomb!";
-                    break;
-
-                default:
+                string imagePath = Path.Combine("Images", $"{gameName.Replace(" ", "").ToLower()}.jpg");
+                if (File.Exists(imagePath))
+                {
+                    GameImage.Source = new BitmapImage(new Uri(Path.GetFullPath(imagePath)));
+                }
+                else
+                {
                     GameImage.Source = null;
-                    GameDescription.Text = "Select a game to see details.";
-                    break;
+                }
+
+                GameDescription.Text = selectedGame.Description;
+            }
+            else
+            {
+                GameImage.Source = null;
+                GameDescription.Text = "Select a game to see details.";
             }
         }
 
@@ -114,9 +139,11 @@ namespace IFLEGameLauncher
                 return;
             }
 
-            if (GameListBox.SelectedItem is ListBoxItem selectedItem)
+            if (GameListBox.SelectedItem is string gameName)
             {
-                string gameName = selectedItem.Content.ToString();
+                MessageBox.Show($"{gameName} selected!"); 
+
+                //string gameName = selectedItem.Content.ToString();
                 string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
 
                 string exePath = FindGameExecutable(gameFolder);
@@ -151,10 +178,11 @@ namespace IFLEGameLauncher
                 return;
             }
 
-            if (GameListBox.SelectedItem is ListBoxItem selectedItem)
+            if (GameListBox.SelectedItem is string gameName)
             {
-                string gameName = selectedItem.Content.ToString();
-                string downloadUrl = GetDownloadUrl(gameName);
+                //string gameName = selectedItem.Content.ToString();
+                var selectedGame = games.FirstOrDefault(g => g.Title == gameName);
+                string downloadUrl = selectedGame.DownloadUrl;
                 string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
 
                 MessageBox.Show($"Game will be download to: {selectedDownloadFolder}");
@@ -264,6 +292,7 @@ namespace IFLEGameLauncher
                 selectedDownloadFolder = dialog.FileName;
                 SaveDownloadPath(selectedDownloadFolder);
                 MessageBox.Show($"Download folder set to:\n{selectedDownloadFolder}", "Download Location", MessageBoxButton.OK, MessageBoxImage.Information);
+                DownloadPathText.Text = $"{selectedDownloadFolder}";
             }
         }
         private void ChooseDownloadLocation_Click(object sender, RoutedEventArgs e)

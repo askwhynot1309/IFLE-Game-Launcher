@@ -88,12 +88,19 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
 
-                <!-- Game List Items -->
-                <ListBoxItem Content="Math Game"/>
+                <!-- Game List Items hardcode for test -->
+                <!--<ListBoxItem Content="Math Game"/>
                 <ListBoxItem Content="English Game"/>
                 <ListBoxItem Content="Run Game"/>
-                <ListBoxItem Content="Balloon Pop Game"/>
+                <ListBoxItem Content="Balloon Pop Game"/>-->
             </ListBox>
+            <TextBlock x:Name="DownloadPathText"
+                       Text="Current Save:"
+                       Foreground="#283E51"
+                       FontSize="14"
+                       Margin="0,5,0,0"
+                       TextWrapping="Wrap"
+                       Width="200"/>
 
             <Button Content="Choose Download Location" Background="#3776A1" Height="59" Foreground="White" FontSize="16" Click="ChooseDownloadLocation_Click">
                 <Button.Style>
@@ -125,7 +132,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-
+        
         </StackPanel>
 
 
