@@ -98,7 +98,11 @@ namespace IFLEGameLauncher
                 if (selectedGame != null)
                 {
                     GameImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("Images/balloon.jpg")));
-                    GameDescription.Text = selectedGame.Description;
+
+                    string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
+                        $"Version: {v.Version} - {v.Description} ({v.VersionDate:yyyy-MM-dd})"
+                    ));
+                    GameDescription.Text = selectedGame.Description + "\n" + versionInfo;
                 }
                 else
                 {
@@ -195,20 +199,6 @@ namespace IFLEGameLauncher
 
                 await DownloadAndExtractGame(gameName, downloadUrl, gameFolder);
             }
-        }
-
-
-        //test download API
-        private string GetDownloadUrl(string gameName)
-        {
-            return gameName switch
-            {
-                "Math Game" => "https://localhost:7000/api/downloadMathGame",
-                "English Game" => "https://localhost:7000/api/downloadEnglishGame",
-                "Run Game" => "https://localhost:7000/api/downloadRunGame",
-                "Balloon Pop Game" => "https://localhost:7000/api/downloadBalloonGame",
-                _ => null
-            };
         }
 
         private async Task DownloadAndExtractGame(string gameName, string downloadUrl, string gameFolder)
