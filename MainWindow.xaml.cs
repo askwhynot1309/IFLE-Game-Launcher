@@ -145,7 +145,7 @@ namespace IFLEGameLauncher
 
             if (GameListBox.SelectedItem is string gameName)
             {
-                MessageBox.Show($"{gameName} selected!"); 
+                //MessageBox.Show($"{gameName} selected!"); 
 
                 //string gameName = selectedItem.Content.ToString();
                 string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
@@ -173,7 +173,6 @@ namespace IFLEGameLauncher
             return null;
         }
 
-
         private async void DownloadGame_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(selectedDownloadFolder))
@@ -189,7 +188,7 @@ namespace IFLEGameLauncher
                 string downloadUrl = selectedGame.DownloadUrl;
                 string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
 
-                MessageBox.Show($"Game will be download to: {selectedDownloadFolder}");
+                //MessageBox.Show($"Game will be download to: {selectedDownloadFolder}");
                 
                 if (string.IsNullOrEmpty(downloadUrl))
                 {
@@ -212,20 +211,43 @@ namespace IFLEGameLauncher
 
                 string zipPath = Path.Combine(gameFolder, gameName + ".zip");
 
+                // Progress Window pop up
+                DownloadProgressWindow progressWindow = new DownloadProgressWindow();
+                progressWindow.Show();
+
                 using (HttpClient client = new HttpClient())
                 {
                     HttpResponseMessage response = await client.GetAsync(downloadUrl);
                     response.EnsureSuccessStatusCode();
 
-                    //if (!response.Content.Headers.ContentType.MediaType.Contains("zip"))
-                    //{
-                    //    MessageBox.Show($"The downloaded file is not a valid ZIP. Check the API response.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //    return;
-                    //}
 
-                    byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
-                    await File.WriteAllBytesAsync(zipPath, fileBytes);
+                    //byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
+                    //await File.WriteAllBytesAsync(zipPath, fileBytes);
+                    long? totalBytes = response.Content.Headers.ContentLength;
+                    byte[] buffer = new byte[8192];
+                    long totalRead = 0;
+                    int readBytes;
+
+                    using (var contentStream = await response.Content.ReadAsStreamAsync())
+                    using (var fileStream = new FileStream(zipPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                    {
+                        while ((readBytes = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            await fileStream.WriteAsync(buffer, 0, readBytes);
+                            totalRead += readBytes;
+
+                            // Update Progress
+                            if (totalBytes.HasValue)
+                            {
+                                int progressPercentage = (int)((totalRead * 100) / totalBytes.Value);
+                                progressWindow.UpdateProgress(progressPercentage);
+                            }
+                        }
+                    }
                 }
+
+                // Close Progress Window
+                progressWindow.Close();  
 
                 // Extract ZIP
                 ExtractZipFile(zipPath, gameFolder);

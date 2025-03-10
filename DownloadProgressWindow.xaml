@@ -1,0 +1,14 @@
+﻿<Window x:Class="IFLEGameLauncher.DownloadProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IFLEGameLauncher"
+        mc:Ignorable="d"
+        Title="Download Progress" Height="150" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBlock Text="Downloading..." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" FontSize="16" Height="35"/>
+        <ProgressBar x:Name="DownloadProgressBar" Width="350" Minimum="0" Maximum="100" Value="0" Margin="25,58,25,39"/>
+        <TextBlock x:Name="ProgressText" Text="0%" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,10"/>
+    </Grid>
+</Window>
