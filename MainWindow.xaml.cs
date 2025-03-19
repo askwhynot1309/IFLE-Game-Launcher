@@ -97,41 +97,20 @@ namespace IFLEGameLauncher
                 var selectedGame = games.FirstOrDefault(g => g.Title == selectedGameTitle);
                 if (selectedGame != null)
                 {
-                    GameImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("Images/balloon.jpg")));
+                    GameImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(selectedGame.ImageUrl)));
 
                     string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
                         $"Version: {v.Version} - {v.Description} ({v.VersionDate:yyyy-MM-dd})"
                     ));
                     GameDescription.Text = selectedGame.Description + "\n" + versionInfo;
+
+                    string gameFolder = Path.Combine(selectedDownloadFolder, selectedGameTitle.Replace(" ", ""));
+                    UninstallButton.Visibility = Directory.Exists(gameFolder) ? Visibility.Visible : Visibility.Collapsed;
                 }
                 else
                 {
                     GameDescription.Text = "Select a game to see details.";
                 }
-            }
-        }
-
-        private void UpdateGameDetails(string gameName)
-        {
-            var selectedGame = games.FirstOrDefault(g => g.Title == gameName);
-            if (selectedGame != null)
-            {
-                string imagePath = Path.Combine("Images", $"{gameName.Replace(" ", "").ToLower()}.jpg");
-                if (File.Exists(imagePath))
-                {
-                    GameImage.Source = new BitmapImage(new Uri(Path.GetFullPath(imagePath)));
-                }
-                else
-                {
-                    GameImage.Source = null;
-                }
-
-                GameDescription.Text = selectedGame.Description;
-            }
-            else
-            {
-                GameImage.Source = null;
-                GameDescription.Text = "Select a game to see details.";
             }
         }
 
@@ -328,6 +307,44 @@ namespace IFLEGameLauncher
             catch (Exception ex)
             {
                 MessageBox.Show($"Error saving settings: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void UninstallGame_Click(object sender, RoutedEventArgs e)
+        {
+            if (GameListBox.SelectedItem is string gameName)
+            {
+                string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
+
+                if (Directory.Exists(gameFolder))
+                {
+                    MessageBoxResult result = MessageBox.Show(
+                        $"Are you sure you want to uninstall {gameName}?",
+                        "Confirm Uninstall",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            Directory.Delete(gameFolder, true);
+                            MessageBox.Show($"{gameName} has been uninstalled.", "Uninstall Complete", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            // Hide uninstall button after deleting the game
+                            UninstallButton.Visibility = Visibility.Collapsed;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Failed to uninstall {gameName}. Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Game is not installed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    UninstallButton.Visibility = Visibility.Collapsed;
+                }
             }
         }
 

@@ -132,19 +132,75 @@
                     </Style>
                 </Button.Style>
             </Button>
-        
+
         </StackPanel>
 
 
         <!-- Main Content Area -->
         <StackPanel Grid.Column="1" Margin="10">
             <!-- Game Image -->
-            <Image x:Name="GameImage" Height="300" Stretch="Uniform" Margin="0,0,0,10"/>
+
+            <!-- Game Description -->
+            <!-- Game Image -->
+            <Image x:Name="GameImage" Height="300" Stretch="Uniform" Width="500"/>
 
             <!-- Game Description -->
             <TextBlock x:Name="GameDescription" Text="Select a game to see more details..." FontSize="16" TextWrapping="Wrap" Margin="0,0,0,10" Height="100" Foreground="White"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <!--Uninstall Button-->
+                <Button x:Name="UninstallButton"
+                        Content="Uninstall"
+                        Width="150"
+                        Height="40"
+                        Margin="5"
+                        Click="UninstallGame_Click"
+                        Visibility="Collapsed"
+                        Background="Red"
+                        Foreground="White"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Cursor="Hand"
+                        BorderBrush="Transparent">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="#00C853"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="Black" Opacity="0.4" BlurRadius="8"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border CornerRadius="10"
+                    Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <!-- Hover Effect -->
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#009624"/>
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect Color="Black" Opacity="0.6" BlurRadius="12"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#006400"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
                 <!-- Download Button -->
                 <Button Content="Download"
                         Width="150"
@@ -156,9 +212,9 @@
                         FontSize="16"
                         FontWeight="SemiBold"
                         Cursor="Hand"
-                        BorderBrush="Transparent">  
+                        BorderBrush="Transparent">
                     <Button.Style>
-                        <Style TargetType="Button">
+                        <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#4B79A1"/>
                             <Setter Property="Foreground" Value="White"/>
                             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -169,7 +225,7 @@
                             </Setter>
                             <Setter Property="Template">
                                 <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
+                                    <ControlTemplate TargetType="{x:Type Button}">
                                         <Border CornerRadius="10"
                                     Background="{TemplateBinding Background}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -210,7 +266,7 @@
                         Cursor="Hand"
                         BorderBrush="Transparent">
                     <Button.Style>
-                        <Style TargetType="Button">
+                        <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#00C853"/>
                             <Setter Property="Foreground" Value="White"/>
                             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -221,7 +277,7 @@
                             </Setter>
                             <Setter Property="Template">
                                 <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
+                                    <ControlTemplate TargetType="{x:Type Button}">
                                         <Border CornerRadius="10"
                                     Background="{TemplateBinding Background}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -247,6 +303,9 @@
                         </Style>
                     </Button.Style>
                 </Button>
+
+
+
             </StackPanel>
 
         </StackPanel>
