@@ -106,6 +106,8 @@ namespace IFLEGameLauncher
 
                     string gameFolder = Path.Combine(selectedDownloadFolder, selectedGameTitle.Replace(" ", ""));
                     UninstallButton.Visibility = Directory.Exists(gameFolder) ? Visibility.Visible : Visibility.Collapsed;
+                    DownloadButton.Visibility = Directory.Exists(gameFolder) ? Visibility.Collapsed : Visibility.Visible;
+                 
                 }
                 else
                 {
@@ -176,6 +178,7 @@ namespace IFLEGameLauncher
                 }
 
                 await DownloadAndExtractGame(gameName, downloadUrl, gameFolder);
+                GameListBox_SelectionChanged(null, null);
             }
         }
 
@@ -331,8 +334,8 @@ namespace IFLEGameLauncher
                             Directory.Delete(gameFolder, true);
                             MessageBox.Show($"{gameName} has been uninstalled.", "Uninstall Complete", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                            // Hide uninstall button after deleting the game
-                            UninstallButton.Visibility = Visibility.Collapsed;
+                            //UninstallButton.Visibility = Visibility.Collapsed;
+                            GameListBox_SelectionChanged(null, null);
                         }
                         catch (Exception ex)
                         {
