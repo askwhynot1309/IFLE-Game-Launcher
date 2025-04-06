@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Game
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public string VideoUrl { get; set; }
@@ -16,7 +16,7 @@ public class Game
 
 public class Category
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
 }

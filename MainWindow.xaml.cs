@@ -68,7 +68,7 @@ namespace IFLEGameLauncher
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    string apiUrl = "https://localhost:7000/api/get-game-info";
+                    string apiUrl = "https://localhost:7174/api/Game";
 
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
                     response.EnsureSuccessStatusCode();
@@ -97,7 +97,9 @@ namespace IFLEGameLauncher
                 var selectedGame = games.FirstOrDefault(g => g.Title == selectedGameTitle);
                 if (selectedGame != null)
                 {
-                    GameImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(selectedGame.ImageUrl)));
+                    //GameImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(selectedGame.ImageUrl)));
+                    GameImage.Source = new BitmapImage(new Uri("https://t4.ftcdn.net/jpg/04/42/21/53/360_F_442215355_AjiR6ogucq3vPzjFAAEfwbPXYGqYVAap.jpg", UriKind.Absolute));
+
 
                     string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
                         $"Version: {v.Version} - {v.Description} ({v.VersionDate:yyyy-MM-dd})"
@@ -202,9 +204,6 @@ namespace IFLEGameLauncher
                     HttpResponseMessage response = await client.GetAsync(downloadUrl);
                     response.EnsureSuccessStatusCode();
 
-
-                    //byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
-                    //await File.WriteAllBytesAsync(zipPath, fileBytes);
                     long? totalBytes = response.Content.Headers.ContentLength;
                     byte[] buffer = new byte[8192];
                     long totalRead = 0;
@@ -229,11 +228,11 @@ namespace IFLEGameLauncher
                 }
 
                 // Close Progress Window
-                progressWindow.Close();  
+                progressWindow.Close();
 
                 // Extract ZIP
                 ExtractZipFile(zipPath, gameFolder);
-                File.Delete(zipPath); 
+                File.Delete(zipPath);
 
                 MessageBox.Show($"{gameName} downloaded and extracted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -355,5 +354,45 @@ namespace IFLEGameLauncher
         {
             public string DownloadFolder { get; set; }
         }
+
+        //private async Task DownloadAndExtractGame(string gameName, string downloadUrl, string gameFolder)
+        //{
+        //    try
+        //    {
+        //        if (!Directory.Exists(gameFolder))
+        //        {
+        //            Directory.CreateDirectory(gameFolder);
+        //        }
+
+        //        string zipPath = Path.Combine(gameFolder, gameName + ".zip");
+
+        //        using (HttpClient client = new HttpClient())
+        //        {
+        //            using (var response = await client.GetAsync(downloadUrl))
+        //            {
+        //                response.EnsureSuccessStatusCode();
+
+        //                using (var fs = new FileStream(zipPath, FileMode.Create, FileAccess.Write, FileShare.None))
+        //                {
+        //                    await response.Content.CopyToAsync(fs);
+        //                }
+        //            }
+        //        }
+
+        //        // Extract ZIP
+        //        System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, gameFolder);
+        //        File.Delete(zipPath);
+
+        //        MessageBox.Show($"{gameName} downloaded and extracted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+        //        // Refresh UI so Download button disappears, Uninstall button shows
+        //        GameListBox_SelectionChanged(null, null);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Failed to download {gameName}. Error: {ex.Message}", "Download Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
     }
 }
