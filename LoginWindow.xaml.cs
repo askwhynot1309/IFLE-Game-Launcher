@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -14,6 +15,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using IFLEGameLauncher.Model;
+using Newtonsoft.Json;
 
 namespace IFLEGameLauncher
 {
@@ -44,11 +47,8 @@ namespace IFLEGameLauncher
                 return;
             }
 
-            // Call API for Login
-            if (await LoginAsync(email, password))
+            if (await PerformLogin(email, password))
             {
-                //MessageBox.Show("Login successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
                 // Open Main Game Window
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
@@ -60,41 +60,89 @@ namespace IFLEGameLauncher
                 MessageBox.Show("Login failed. Please check your input.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        private async Task<bool> LoginAsync(string email, string password)
+        private async Task<bool> PerformLogin(string email, string password)
         {
             try
             {
-                var loginData = new
+                using (HttpClient client = new HttpClient())
                 {
-                    email = email,
-                    password = password
-                };
+                    var loginData = new
+                    {
+                        email = email,
+                        password = password
+                    };
 
-                string jsonContent = JsonSerializer.Serialize(loginData);
-                HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                    string json = JsonConvert.SerializeObject(loginData);
+                    HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    Debug.WriteLine(content);
 
-                // API Request
-                HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7000/api/login", content);
-                
-                // Check Response
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                else
-                {
-                    string error = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Login failed: {error}");
-                    return false;
+                    string loginUrl = "https://localhost:7174/api/auth/login";
+                    HttpResponseMessage response = await client.PostAsync(loginUrl, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string result = await response.Content.ReadAsStringAsync();
+                        var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(result);
+
+                        //store tokens
+                        string accessToken = loginResponse.AccessToken;
+                        string refreshToken = loginResponse.RefreshToken;
+
+                        App.AccessToken = accessToken;
+                        App.RefreshToken = refreshToken;
+
+
+                        MessageBox.Show("Login successful!");
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Login failed: " + response.StatusCode);
+                        return false;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "API Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Login error: " + ex.Message);
                 return false;
             }
         }
+
+        //private async Task<bool> PerformLogin(string email, string password)
+        //{
+        //    try
+        //    {
+        //        var loginData = new
+        //        {
+        //            email = email,
+        //            password = password
+        //        };
+
+        //        string jsonContent = JsonSerializer.Serialize(loginData);
+        //        HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+        //        // API Request
+        //        HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7000/api/login", content);
+
+        //        // Check Response
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            string error = await response.Content.ReadAsStringAsync();
+        //            Console.WriteLine($"Login failed: {error}");
+        //            return false;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error: {ex.Message}", "API Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        return false;
+        //    }
+        //}
 
         private bool IsValidEmail(string email)
         {
