@@ -28,17 +28,18 @@
 
                 <!--Forgot Password Field-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,10">
-                    <Button Content="Forgot Password?" Background="Transparent" BorderBrush="Transparent" Foreground="#4B79A1" Width="103"/>
+                    <!--<Button Content="Forgot Password?" Background="Transparent" BorderBrush="Transparent" Foreground="#4B79A1" Width="103"/>-->
+                    <TextBlock Text="Let's enjoy interactive activities together !" FontSize="14" FontWeight="Light" Foreground="#283E51"/>
                 </StackPanel>
 
                 <!-- Login Button -->
                 <Button Content="Login" Background="#4B79A1" Foreground="White" FontSize="16" Height="40" Click="LoginButton_Click"/>
 
                 <!-- Sign Up Link -->
-                <TextBlock HorizontalAlignment="Center" Margin="10,20,0,0">
+                <!--<TextBlock HorizontalAlignment="Center" Margin="10,20,0,0">
                     <Run Text="Don't have an account? " Foreground="#283E51"/>
                     <Hyperlink Foreground="#4B79A1">Sign Up</Hyperlink>
-                </TextBlock>
+                </TextBlock>-->
             </StackPanel>
         </Border>
     </Grid>

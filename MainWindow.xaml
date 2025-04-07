@@ -212,7 +212,8 @@
                         FontSize="16"
                         FontWeight="SemiBold"
                         Cursor="Hand"
-                        BorderBrush="Transparent">
+                        BorderBrush="Transparent"
+                        Visibility="Collapsed">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#4B79A1"/>
@@ -252,6 +253,57 @@
                         </Style>
                     </Button.Style>
                 </Button>
+                <Button x:Name="UpdateButton" Content="Update"
+                    Width="150"
+                    Height="40"
+                    Margin="5"
+                    Click="DownloadGame_Click"
+                    Background="GreenYellow"
+                    Foreground="White"
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Cursor="Hand"
+                    BorderBrush="Transparent"
+                    Visibility="Collapsed">  
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="#4B79A1"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="Black" Opacity="0.4" BlurRadius="8"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border CornerRadius="10"
+                    Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <!-- Hover Effect -->
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#355C7D"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect Color="Black" Opacity="0.6" BlurRadius="12"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#283E51"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
 
                 <!-- Play Button -->
                 <Button x:Name="PlayButton" Content="Play"
@@ -264,7 +316,8 @@
                         FontSize="16"
                         FontWeight="SemiBold"
                         Cursor="Hand"
-                        BorderBrush="Transparent">
+                        BorderBrush="Transparent"
+                        Visibility="Collapsed">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#00C853"/>

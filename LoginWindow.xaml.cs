@@ -92,7 +92,7 @@ namespace IFLEGameLauncher
                         App.RefreshToken = refreshToken;
 
 
-                        MessageBox.Show("Login successful!");
+                        //MessageBox.Show("Login successful!");
                         return true;
                     }
                     else

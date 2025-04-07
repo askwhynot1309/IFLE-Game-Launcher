@@ -97,19 +97,45 @@ namespace IFLEGameLauncher
                 var selectedGame = games.FirstOrDefault(g => g.Title == selectedGameTitle);
                 if (selectedGame != null)
                 {
+                    
                     //GameImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(selectedGame.ImageUrl)));
-                    GameImage.Source = new BitmapImage(new Uri("https://t4.ftcdn.net/jpg/04/42/21/53/360_F_442215355_AjiR6ogucq3vPzjFAAEfwbPXYGqYVAap.jpg", UriKind.Absolute));
+                    GameImage.Source = new BitmapImage(new Uri(selectedGame.ImageUrl, UriKind.Absolute));
 
 
                     string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
-                        $"Version: {v.Version} - {v.Description} ({v.VersionDate:yyyy-MM-dd})"
+                        $"Version: {v.Version} ({v.VersionDate:yyyy-MM-dd})"
                     ));
                     GameDescription.Text = selectedGame.Description + "\n" + versionInfo;
 
+                    PlayButton.Visibility = Visibility.Visible;
+
                     string gameFolder = Path.Combine(selectedDownloadFolder, selectedGameTitle.Replace(" ", ""));
-                    UninstallButton.Visibility = Directory.Exists(gameFolder) ? Visibility.Visible : Visibility.Collapsed;
-                    DownloadButton.Visibility = Directory.Exists(gameFolder) ? Visibility.Collapsed : Visibility.Visible;
-                 
+                    string localVersion = GetLocalGameVersion(gameFolder);
+                    //MessageBox.Show(localVersion);
+                    string latestVersion = selectedGame.Versions.OrderByDescending(v => v.VersionDate).FirstOrDefault()?.Version ?? "1.0";
+
+                    //MessageBox.Show(latestVersion);
+                    //UninstallButton.Visibility = Directory.Exists(gameFolder) ? Visibility.Visible : Visibility.Collapsed;
+                    //DownloadButton.Visibility = Directory.Exists(gameFolder) ? Visibility.Collapsed : Visibility.Visible;
+                    if (Directory.Exists(gameFolder))
+                    {
+                        if (localVersion != null && localVersion != latestVersion)
+                        {
+                            UpdateButton.Visibility = Visibility.Visible;
+                            DownloadButton.Visibility = Visibility.Collapsed;
+                        }
+                        else
+                        {
+                            UpdateButton.Visibility = Visibility.Collapsed;
+                            DownloadButton.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        UpdateButton.Visibility = Visibility.Collapsed;
+                        DownloadButton.Visibility = Visibility.Visible;
+                    }
+
                 }
                 else
                 {
@@ -170,21 +196,22 @@ namespace IFLEGameLauncher
                 var selectedGame = games.FirstOrDefault(g => g.Title == gameName);
                 string downloadUrl = selectedGame.DownloadUrl;
                 string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
+                string latestVersion = selectedGame.Versions.OrderByDescending(v => v.VersionDate).FirstOrDefault()?.Version;
 
                 //MessageBox.Show($"Game will be download to: {selectedDownloadFolder}");
-                
+
                 if (string.IsNullOrEmpty(downloadUrl))
                 {
                     MessageBox.Show("Download URL not found for the selected game.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
-                await DownloadAndExtractGame(gameName, downloadUrl, gameFolder);
+                await DownloadAndExtractGame(gameName, downloadUrl, gameFolder, latestVersion);
                 GameListBox_SelectionChanged(null, null);
             }
         }
 
-        private async Task DownloadAndExtractGame(string gameName, string downloadUrl, string gameFolder)
+        private async Task DownloadAndExtractGame(string gameName, string downloadUrl, string gameFolder, string latestVersion)
         {
             try
             {
@@ -233,6 +260,7 @@ namespace IFLEGameLauncher
                 // Extract ZIP
                 ExtractZipFile(zipPath, gameFolder);
                 File.Delete(zipPath);
+                File.WriteAllText(Path.Combine(gameFolder, "version.txt"), latestVersion);
 
                 MessageBox.Show($"{gameName} downloaded and extracted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -288,6 +316,7 @@ namespace IFLEGameLauncher
                 DownloadPathText.Text = $"{selectedDownloadFolder}";
             }
         }
+
         private void ChooseDownloadLocation_Click(object sender, RoutedEventArgs e)
         {
             //MessageBox.Show($"Current location: { selectedDownloadFolder}");
@@ -355,44 +384,16 @@ namespace IFLEGameLauncher
             public string DownloadFolder { get; set; }
         }
 
-        //private async Task DownloadAndExtractGame(string gameName, string downloadUrl, string gameFolder)
-        //{
-        //    try
-        //    {
-        //        if (!Directory.Exists(gameFolder))
-        //        {
-        //            Directory.CreateDirectory(gameFolder);
-        //        }
-
-        //        string zipPath = Path.Combine(gameFolder, gameName + ".zip");
-
-        //        using (HttpClient client = new HttpClient())
-        //        {
-        //            using (var response = await client.GetAsync(downloadUrl))
-        //            {
-        //                response.EnsureSuccessStatusCode();
-
-        //                using (var fs = new FileStream(zipPath, FileMode.Create, FileAccess.Write, FileShare.None))
-        //                {
-        //                    await response.Content.CopyToAsync(fs);
-        //                }
-        //            }
-        //        }
-
-        //        // Extract ZIP
-        //        System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, gameFolder);
-        //        File.Delete(zipPath);
-
-        //        MessageBox.Show($"{gameName} downloaded and extracted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-        //        // Refresh UI so Download button disappears, Uninstall button shows
-        //        GameListBox_SelectionChanged(null, null);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Failed to download {gameName}. Error: {ex.Message}", "Download Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
+        // get local version from txt file
+        private string GetLocalGameVersion(string gameFolder)
+        {
+            string versionPath = Path.Combine(gameFolder, "version.txt");
+            if (File.Exists(versionPath))
+            {
+                return File.ReadAllText(versionPath).Trim();
+            }
+            return null;
+        }
 
     }
 }
