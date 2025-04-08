@@ -168,6 +168,7 @@ namespace IFLEGameLauncher
                 else
                 {
                     MessageBox.Show("Game not found! Please download it first.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DownloadButton.Visibility = Visibility.Visible;
                 }
             }
         }
