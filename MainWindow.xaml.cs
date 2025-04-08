@@ -10,6 +10,7 @@ using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace IFLEGameLauncher
 {
@@ -66,9 +67,35 @@ namespace IFLEGameLauncher
         {
             try
             {
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(App.AccessToken);
+
+                var userIdClaim = jwtToken.Claims.FirstOrDefault(claim =>
+                    claim.Type == "userId" || claim.Type.EndsWith("/identity/claims/nameidentifier"));
+                var roleClaim = jwtToken.Claims.FirstOrDefault(claim =>
+                    claim.Type == "role" || claim.Type.EndsWith("/identity/claims/role"));
+
+                string? userId = userIdClaim?.Value;
+                string? role = roleClaim?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    Debug.WriteLine("Failed to get user ID from access token.");
+                    return;
+                }
+
+                if (role != "Customer")
+                {
+                    MessageBox.Show("Access denied.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    return;
+                }
+
                 using (HttpClient client = new HttpClient())
                 {
-                    string apiUrl = "https://localhost:7174/api/Game";
+                    client.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
+
+                    string apiUrl = $"https://localhost:7174/api/game/user/{userId}/purchased";
 
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
                     response.EnsureSuccessStatusCode();
@@ -78,10 +105,6 @@ namespace IFLEGameLauncher
 
                     GameListBox.Items.Clear();
                     GameListBox.ItemsSource = games.Select(g => g.Title).ToList();
-                    //foreach (var game in games)
-                    //{
-                    //    GameListBox.Items.Add(game.Title);
-                    //}
                 }
             }
             catch (Exception ex)
