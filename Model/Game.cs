@@ -27,3 +27,8 @@ public class GameVersion
     public string Description { get; set; }
     public DateTime VersionDate { get; set; }
 }
+
+class Settings
+{
+    public string DownloadFolder { get; set; }
+}

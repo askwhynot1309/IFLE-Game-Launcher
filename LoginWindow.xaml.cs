@@ -97,7 +97,7 @@ namespace IFLEGameLauncher
                     }
                     else
                     {
-                        MessageBox.Show("Login failed: " + response.StatusCode);
+                        //MessageBox.Show("Login failed: " + response.StatusCode);
                         return false;
                     }
                 }

@@ -379,11 +379,6 @@ namespace IFLEGameLauncher
             }
         }
 
-        class Settings
-        {
-            public string DownloadFolder { get; set; }
-        }
-
         // get local version from txt file
         private string GetLocalGameVersion(string gameFolder)
         {
