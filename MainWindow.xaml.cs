@@ -117,6 +117,11 @@ namespace IFLEGameLauncher
 
         private void GameListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            PlayButton.Visibility = Visibility.Collapsed;
+            UninstallButton.Visibility = Visibility.Collapsed;
+            DownloadButton.Visibility = Visibility.Collapsed;
+            UpdateButton.Visibility = Visibility.Collapsed;
+
             if (GameListBox.SelectedItem is string selectedGameTitle)
             {
                 var selectedGame = games.FirstOrDefault(g => g.Title == selectedGameTitle);
@@ -132,32 +137,23 @@ namespace IFLEGameLauncher
                     ));
                     GameDescription.Text = selectedGame.Description + "\n" + versionInfo;
 
-                    PlayButton.Visibility = Visibility.Visible;
-
                     string gameFolder = Path.Combine(selectedDownloadFolder, selectedGameTitle.Replace(" ", ""));
                     string localVersion = GetLocalGameVersion(gameFolder);
                     //MessageBox.Show(localVersion);
                     string latestVersion = selectedGame.Versions.OrderByDescending(v => v.VersionDate).FirstOrDefault()?.Version ?? "1.0";
 
-                    //MessageBox.Show(latestVersion);
-                    //UninstallButton.Visibility = Directory.Exists(gameFolder) ? Visibility.Visible : Visibility.Collapsed;
-                    //DownloadButton.Visibility = Directory.Exists(gameFolder) ? Visibility.Collapsed : Visibility.Visible;
                     if (Directory.Exists(gameFolder))
                     {
+                        PlayButton.Visibility = Visibility.Visible;
+                        UninstallButton.Visibility = Visibility.Visible;
+
                         if (localVersion != null && localVersion != latestVersion)
                         {
                             UpdateButton.Visibility = Visibility.Visible;
-                            DownloadButton.Visibility = Visibility.Collapsed;
-                        }
-                        else
-                        {
-                            UpdateButton.Visibility = Visibility.Collapsed;
-                            DownloadButton.Visibility = Visibility.Collapsed;
                         }
                     }
                     else
                     {
-                        UpdateButton.Visibility = Visibility.Collapsed;
                         DownloadButton.Visibility = Visibility.Visible;
                     }
 
