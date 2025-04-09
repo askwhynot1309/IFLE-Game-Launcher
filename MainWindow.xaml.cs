@@ -167,7 +167,7 @@ namespace IFLEGameLauncher
             }
         }
 
-        private void PlayGame_Click(object sender, RoutedEventArgs e)
+        private async void PlayGame_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(selectedDownloadFolder))
             {
@@ -180,12 +180,14 @@ namespace IFLEGameLauncher
                 //MessageBox.Show($"{gameName} selected!"); 
 
                 //string gameName = selectedItem.Content.ToString();
+                var selectedGame = games.FirstOrDefault(g => g.Title == gameName);
                 string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
 
                 string exePath = FindGameExecutable(gameFolder);
 
                 if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
                 {
+                   await UpdateGamePlayCount(selectedGame.Id);
                     Process.Start(exePath);
                 }
                 else
@@ -412,6 +414,35 @@ namespace IFLEGameLauncher
                 return File.ReadAllText(versionPath).Trim();
             }
             return null;
+        }
+
+        private async Task UpdateGamePlayCount(string gameId)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
+
+                    string apiUrl = $"https://localhost:7174/api/game/update-game-count/{gameId}";
+
+                    var response = await client.PutAsync(apiUrl, null);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine($"Game play count updated for {gameId}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Failed to update play count. Status: {response.StatusCode}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error updating play count: " + ex.Message);
+            }
         }
 
     }
