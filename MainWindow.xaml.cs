@@ -129,8 +129,15 @@ namespace IFLEGameLauncher
                 {
                     
                     //GameImage.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(selectedGame.ImageUrl)));
-                    GameImage.Source = new BitmapImage(new Uri(selectedGame.ImageUrl, UriKind.Absolute));
-
+                   // GameImage.Source = new BitmapImage(new Uri(selectedGame.ImageUrl, UriKind.Absolute));
+                    if (!string.IsNullOrEmpty(selectedGame.ImageUrl))
+                    {
+                        GameImage.Source = new BitmapImage(new Uri(selectedGame.ImageUrl, UriKind.Absolute));
+                    }
+                    else
+                    {
+                        GameImage.Source = null;
+                    }
 
                     string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
                         $"Version: {v.Version} ({v.VersionDate:yyyy-MM-dd})"
@@ -192,6 +199,8 @@ namespace IFLEGameLauncher
                 {
                     MessageBox.Show("Game not found! Please download it first.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     DownloadButton.Visibility = Visibility.Visible;
+                    UninstallButton.Visibility = Visibility.Hidden;
+                    PlayButton.Visibility = Visibility.Hidden;
                 }
             }
         }
