@@ -11,6 +11,8 @@ using ICSharpCode.SharpZipLib.Zip;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
+using OpenNISharp2;
+using System.Text.RegularExpressions;
 
 namespace IFLEGameLauncher
 {
@@ -445,5 +447,35 @@ namespace IFLEGameLauncher
             }
         }
 
+        private void DeviceCheck_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                OpenNI.Initialize();
+
+                var devices = OpenNI.GetDevices();
+
+
+
+                var device = devices.FirstOrDefault();
+                string uri = device.Uri;
+                var match = Regex.Match(uri, @"{(?<guid>[0-9a-fA-F\-]{36})}");
+
+                if (match.Success)
+                {
+                    string guid = match.Groups["guid"].Value;
+                    DeviceGUID.Text = guid;
+                }
+                else
+                {
+                    Console.WriteLine("Không tìm thấy GUID.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error initializing OpenNI2: {ex.Message}");
+            }
+        }
     }
 }

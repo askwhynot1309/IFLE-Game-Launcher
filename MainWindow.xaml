@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IFLEGameLauncher"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900">
+        Title="MainWindow" Height="650" Width="900">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -200,7 +200,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                
+
                 <!-- Download Button -->
                 <Button x:Name="DownloadButton" Content="Download"
                         Width="150"
@@ -264,7 +264,7 @@
                     FontWeight="SemiBold"
                     Cursor="Hand"
                     BorderBrush="Transparent"
-                    Visibility="Collapsed">  
+                    Visibility="Collapsed">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#4B79A1"/>
@@ -362,5 +362,7 @@
             </StackPanel>
 
         </StackPanel>
+        <Button Content="Device Check" HorizontalAlignment="Left" Margin="10,13,0,0" Grid.Row="1" VerticalAlignment="Top" Width="115" Height="31" Click="DeviceCheck_Click"/>
+        <TextBox HorizontalAlignment="Left" Margin="130,13,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="235" Height="31" Grid.ColumnSpan="2" x:Name="DeviceGUID" />
     </Grid>
 </Window>
