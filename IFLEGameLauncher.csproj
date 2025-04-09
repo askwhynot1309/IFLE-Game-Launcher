@@ -35,4 +35,172 @@
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.0" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Compile Remove="Astra\Plugins\**" />
+		<EmbeddedResource Remove="Astra\Plugins\**" />
+		<None Remove="Astra\Plugins\**" />
+		<Page Remove="Astra\Plugins\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Astra\astra.dll" />
+		<None Remove="Astra\astra.toml" />
+		<None Remove="Astra\AstraDotNet.dll" />
+		<None Remove="Astra\astra_core.dll" />
+		<None Remove="Astra\astra_core_api.dll" />
+		<None Remove="Astra\OniFile.dll" />
+		<None Remove="Astra\opencv_core248.dll" />
+		<None Remove="Astra\opencv_highgui248.dll" />
+		<None Remove="Astra\opencv_imgproc248.dll" />
+		<None Remove="Astra\opencv_video248.dll" />
+		<None Remove="Astra\OpenNI.ini" />
+		<None Remove="Astra\OpenNI2.dll" />
+		<None Remove="Astra\orbbec.dll" />
+		<None Remove="Astra\orbbec.ini" />
+		<None Remove="Astra\x32\astra.dll" />
+		<None Remove="Astra\x32\astra.toml" />
+		<None Remove="Astra\x32\AstraDotNet.dll" />
+		<None Remove="Astra\x32\astra_core.dll" />
+		<None Remove="Astra\x32\astra_core_api.dll" />
+		<None Remove="Astra\x32\OniFile.dll" />
+		<None Remove="Astra\x32\opencv_core248.dll" />
+		<None Remove="Astra\x32\opencv_highgui248.dll" />
+		<None Remove="Astra\x32\opencv_imgproc248.dll" />
+		<None Remove="Astra\x32\opencv_video248.dll" />
+		<None Remove="Astra\x32\OpenNI.ini" />
+		<None Remove="Astra\x32\OpenNI2.dll" />
+		<None Remove="Astra\x32\orbbec.dll" />
+		<None Remove="Astra\x32\orbbec.ini" />
+		<None Remove="Astra\x32\Plugins\openni_sensor.dll" />
+		<None Remove="Astra\x32\Plugins\OrbbecBodyTracking.dll" />
+		<None Remove="Astra\x32\Plugins\orbbec_xs.dll" />
+		<None Remove="Astra\x64\astra.dll" />
+		<None Remove="Astra\x64\astra.toml" />
+		<None Remove="Astra\x64\AstraDotNet.dll" />
+		<None Remove="Astra\x64\astra_core.dll" />
+		<None Remove="Astra\x64\astra_core_api.dll" />
+		<None Remove="Astra\x64\OniFile.dll" />
+		<None Remove="Astra\x64\opencv_core248.dll" />
+		<None Remove="Astra\x64\opencv_highgui248.dll" />
+		<None Remove="Astra\x64\opencv_imgproc248.dll" />
+		<None Remove="Astra\x64\opencv_video248.dll" />
+		<None Remove="Astra\x64\OpenNI.ini" />
+		<None Remove="Astra\x64\OpenNI2.dll" />
+		<None Remove="Astra\x64\orbbec.dll" />
+		<None Remove="Astra\x64\orbbec.ini" />
+		<None Remove="Astra\x64\Plugins\openni_sensor.dll" />
+		<None Remove="Astra\x64\Plugins\OrbbecBodyTracking.dll" />
+		<None Remove="Astra\x64\Plugins\orbbec_xs.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Astra\x32\astra.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\astra.toml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\AstraDotNet.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\astra_core.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\astra_core_api.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\OniFile.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\opencv_core248.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\opencv_highgui248.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\opencv_imgproc248.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\opencv_video248.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\OpenNI.ini">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\OpenNI2.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\orbbec.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\orbbec.ini">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\Plugins\openni_sensor.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\Plugins\OrbbecBodyTracking.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x32\Plugins\orbbec_xs.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\astra.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\astra.toml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\AstraDotNet.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\astra_core.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\astra_core_api.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\OniFile.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\opencv_core248.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\opencv_highgui248.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\opencv_imgproc248.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\opencv_video248.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\OpenNI.ini">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\OpenNI2.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\orbbec.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\orbbec.ini">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\Plugins\openni_sensor.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\Plugins\OrbbecBodyTracking.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Astra\x64\Plugins\orbbec_xs.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="AstraDotNet">
+			<HintPath>Astra\x64\AstraDotNet.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 </Project>
