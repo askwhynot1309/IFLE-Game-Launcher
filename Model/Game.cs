@@ -1,6 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 
+public class PlayablePackage
+{
+    public string Id { get; set; }
+    public decimal Price { get; set; }
+    public DateTime OrderDate { get; set; }
+    public string OrderCode { get; set; }
+    public string PaymentMethod { get; set; }
+    public bool IsActivated { get; set; }
+    public string Status { get; set; }
+    public GamePackageInfo GamePackageInfo { get; set; }
+}
+
+public class GamePackageInfo
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public int Duration { get; set; }
+    public decimal Price { get; set; }
+    public string Status { get; set; }
+    public List<Game> GameList { get; set; }
+}
 public class Game
 {
     public string Id { get; set; }

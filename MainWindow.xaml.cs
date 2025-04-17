@@ -13,18 +13,21 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using OpenNISharp2;
 using System.Text.RegularExpressions;
+using IFLEGameLauncher.Model;
 
 namespace IFLEGameLauncher
 {
     public partial class MainWindow : Window
     {
+        private string floorId;
         private string selectedDownloadFolder;
         private List<Game> games = new List<Game>();
         private static string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
 
-        public MainWindow()
+        public MainWindow(string selectedFloorId)
         {
             InitializeComponent();
+            floorId = selectedFloorId;
             LoadGameData();
             selectedDownloadFolder = LoadDownloadPath();
             DownloadPathText.Text = selectedDownloadFolder;
@@ -74,21 +77,12 @@ namespace IFLEGameLauncher
 
                 var userIdClaim = jwtToken.Claims.FirstOrDefault(claim =>
                     claim.Type == "userId" || claim.Type.EndsWith("/identity/claims/nameidentifier"));
-                var roleClaim = jwtToken.Claims.FirstOrDefault(claim =>
-                    claim.Type == "role" || claim.Type.EndsWith("/identity/claims/role"));
 
                 string? userId = userIdClaim?.Value;
-                string? role = roleClaim?.Value;
 
                 if (string.IsNullOrEmpty(userId))
                 {
                     Debug.WriteLine("Failed to get user ID from access token.");
-                    return;
-                }
-
-                if (role != "Customer")
-                {
-                    MessageBox.Show("Access denied.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Stop);
                     return;
                 }
 
@@ -97,13 +91,24 @@ namespace IFLEGameLauncher
                     client.DefaultRequestHeaders.Authorization =
                         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
 
-                    string apiUrl = $"https://localhost:7174/api/game/user/{userId}/purchased";
+                    //string apiUrl = $"http://160.187.240.95:8080/api/game/user/{userId}/purchased";
+                    string apiUrl = $"https://localhost:7174/api/floors/{floorId}/game-package/playable";
 
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
                     response.EnsureSuccessStatusCode();
                     string responseData = await response.Content.ReadAsStringAsync();
+                    var packages = JsonConvert.DeserializeObject<List<PlayablePackage>>(responseData);
 
-                    games = JsonConvert.DeserializeObject<List<Game>>(responseData);
+                    var gameList = packages?
+                                    .SelectMany(p => p.GamePackageInfo.GameList)
+                                    .ToList();
+
+                    if (gameList == null)
+                    {
+                        MessageBox.Show("No games found for the selected floor.");
+                        return;
+                    }
+                    games = gameList;    
 
                     GameListBox.Items.Clear();
                     GameListBox.ItemsSource = games.Select(g => g.Title).ToList();
@@ -432,7 +437,7 @@ namespace IFLEGameLauncher
                     client.DefaultRequestHeaders.Authorization =
                         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
 
-                    string apiUrl = $"https://localhost:7174/api/game/update-game-count/{gameId}";
+                    string apiUrl = $"http://160.187.240.95:8080/api/game/update-game-count/{gameId}";
 
                     var response = await client.PutAsync(apiUrl, null);
 

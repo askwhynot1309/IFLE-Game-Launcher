@@ -50,8 +50,12 @@ namespace IFLEGameLauncher
             if (await PerformLogin(email, password))
             {
                 // Open Main Game Window
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
+                //MainWindow mainWindow = new MainWindow();
+                //mainWindow.Show();
+
+                OrganizationWindow orgWindow = new OrganizationWindow();
+                orgWindow.Show();
+                this.Close();
 
                 this.Close();
             }
@@ -76,6 +80,7 @@ namespace IFLEGameLauncher
                     HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
                     Debug.WriteLine(content);
 
+                    //string loginUrl = "http://160.187.240.95:8080/api/auth/login";
                     string loginUrl = "https://localhost:7174/api/auth/login";
                     HttpResponseMessage response = await client.PostAsync(loginUrl, content);
 
@@ -92,12 +97,10 @@ namespace IFLEGameLauncher
                         App.RefreshToken = refreshToken;
 
 
-                        //MessageBox.Show("Login successful!");
                         return true;
                     }
                     else
                     {
-                        //MessageBox.Show("Login failed: " + response.StatusCode);
                         return false;
                     }
                 }
@@ -108,41 +111,6 @@ namespace IFLEGameLauncher
                 return false;
             }
         }
-
-        //private async Task<bool> PerformLogin(string email, string password)
-        //{
-        //    try
-        //    {
-        //        var loginData = new
-        //        {
-        //            email = email,
-        //            password = password
-        //        };
-
-        //        string jsonContent = JsonSerializer.Serialize(loginData);
-        //        HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-        //        // API Request
-        //        HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7000/api/login", content);
-
-        //        // Check Response
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            string error = await response.Content.ReadAsStringAsync();
-        //            Console.WriteLine($"Login failed: {error}");
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Error: {ex.Message}", "API Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return false;
-        //    }
-        //}
 
         private bool IsValidEmail(string email)
         {
