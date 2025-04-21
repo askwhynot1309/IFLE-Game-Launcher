@@ -57,6 +57,7 @@ namespace IFLEGameLauncher
         {
             if (FloorListBox.SelectedItem is Floor selectedFloor)
             {
+                App.FloorId = selectedFloor.Id;
                 MainWindow mainWindow = new MainWindow(selectedFloor.Id);
                 mainWindow.Show();
                 this.Close();

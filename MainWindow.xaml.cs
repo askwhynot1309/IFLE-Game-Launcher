@@ -79,6 +79,7 @@ namespace IFLEGameLauncher
                     claim.Type == "userId" || claim.Type.EndsWith("/identity/claims/nameidentifier"));
 
                 string? userId = userIdClaim?.Value;
+                App.UserId = userId;
 
                 if (string.IsNullOrEmpty(userId))
                 {
@@ -130,6 +131,7 @@ namespace IFLEGameLauncher
             if (GameListBox.SelectedItem is string selectedGameTitle)
             {
                 var selectedGame = games.FirstOrDefault(g => g.Title == selectedGameTitle);
+                App.GameId = selectedGame.Id;
                 if (selectedGame != null)
                 {
                     
@@ -143,7 +145,7 @@ namespace IFLEGameLauncher
                     {
                         GameImage.Source = null;
                     }
-
+                    z
                     string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
                         $"Version: {v.Version} ({v.VersionDate:yyyy-MM-dd})"
                     ));
@@ -198,7 +200,11 @@ namespace IFLEGameLauncher
                 if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
                 {
                    await UpdateGamePlayCount(selectedGame.Id);
-                    Process.Start(exePath);
+
+                    string arguments = $"--userId={App.UserId} --floorId={App.FloorId} --gameId={App.GameId}";
+
+                    ProcessStartInfo startInfo = new ProcessStartInfo(exePath, arguments);
+                    Process.Start(startInfo);
                 }
                 else
                 {
@@ -437,7 +443,7 @@ namespace IFLEGameLauncher
                     client.DefaultRequestHeaders.Authorization =
                         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
 
-                    string apiUrl = $"http://160.187.240.95:8080/api/game/update-game-count/{gameId}";
+                    string apiUrl = $"https://localhost:7174/api/game/update-game-count/{gameId}";
 
                     var response = await client.PutAsync(apiUrl, null);
 
