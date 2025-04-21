@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using OpenNISharp2;
 using System.Text.RegularExpressions;
 using IFLEGameLauncher.Model;
+using Newtonsoft.Json.Linq;
 
 namespace IFLEGameLauncher
 {
@@ -21,6 +22,7 @@ namespace IFLEGameLauncher
     {
         private string floorId;
         private string selectedDownloadFolder;
+        private string guid;
         private List<Game> games = new List<Game>();
         private static string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
 
@@ -31,6 +33,7 @@ namespace IFLEGameLauncher
             LoadGameData();
             selectedDownloadFolder = LoadDownloadPath();
             DownloadPathText.Text = selectedDownloadFolder;
+            CheckDeviceUri();
         }
         private static string LoadDownloadPath()
         {
@@ -145,7 +148,6 @@ namespace IFLEGameLauncher
                     {
                         GameImage.Source = null;
                     }
-                    z
                     string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
                         $"Version: {v.Version} ({v.VersionDate:yyyy-MM-dd})"
                     ));
@@ -181,6 +183,11 @@ namespace IFLEGameLauncher
 
         private async void PlayGame_Click(object sender, RoutedEventArgs e)
         {
+            bool checkFloorDevice = await CheckFloorDeviceUri();
+            if (checkFloorDevice != true) {
+                return;
+            }
+
             if (string.IsNullOrEmpty(selectedDownloadFolder))
             {
                 MessageBox.Show("Please choose a download folder first!", "No Folder Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -465,6 +472,11 @@ namespace IFLEGameLauncher
 
         private void DeviceCheck_Click(object sender, RoutedEventArgs e)
         {
+            CheckDeviceUri();
+        }
+
+        public void CheckDeviceUri ()
+        {
             try
             {
                 OpenNI.Initialize();
@@ -479,7 +491,7 @@ namespace IFLEGameLauncher
 
                 if (match.Success)
                 {
-                    string guid = match.Groups["guid"].Value;
+                    guid = match.Groups["guid"].Value;
                     DeviceGUID.Text = guid;
                 }
                 else
@@ -490,8 +502,51 @@ namespace IFLEGameLauncher
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error initializing OpenNI2: {ex.Message}");
+                Console.WriteLine($"Error initializing OpenNI2: {ex.Message}");
             }
+        }
+
+        public async Task<bool> CheckFloorDeviceUri () 
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
+
+                    string apiUrl = $"https://localhost:7174/api/floors/{floorId}";
+
+                    HttpResponseMessage response = await client.GetAsync(apiUrl);
+                    response.EnsureSuccessStatusCode();
+
+                    string responseData = await response.Content.ReadAsStringAsync();
+
+                    var json = JObject.Parse(responseData);
+                    string? uri = json["deviceInfo"]?["uri"]?.ToString();
+
+                    if (!string.IsNullOrEmpty(uri))
+                    {
+                        if (uri == guid)
+                        {
+                            {
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Your device number is not matching the one registered for this floor !");
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error getting device: {ex.Message}");
+                return false;
+            }
+            return false;
         }
     }
 }
