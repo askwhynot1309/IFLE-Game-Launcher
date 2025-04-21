@@ -475,6 +475,8 @@ namespace IFLEGameLauncher
             CheckDeviceUri();
         }
 
+
+        //Phu's code
         public void CheckDeviceUri ()
         {
             try
@@ -515,6 +517,7 @@ namespace IFLEGameLauncher
                     client.DefaultRequestHeaders.Authorization =
                         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
 
+                    //get floor details api
                     string apiUrl = $"https://localhost:7174/api/floors/{floorId}";
 
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
@@ -525,6 +528,7 @@ namespace IFLEGameLauncher
                     var json = JObject.Parse(responseData);
                     string? uri = json["deviceInfo"]?["uri"]?.ToString();
 
+                    //check to match current device and registered device
                     if (!string.IsNullOrEmpty(uri))
                     {
                         if (uri == guid)
@@ -548,5 +552,28 @@ namespace IFLEGameLauncher
             }
             return false;
         }
+
+        private void LogOut_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to log out?", "Confirm Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                // Clear saved global context
+                App.AccessToken = null;
+                App.RefreshToken = null;
+                App.UserId = null;
+                App.FloorId = null;
+                App.GameId = null;
+
+
+                // Open LoginWindow
+                LoginWindow loginWindow = new LoginWindow();
+                loginWindow.Show();
+
+                this.Close();
+            }
+        }
+
     }
 }
