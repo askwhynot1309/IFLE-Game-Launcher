@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Icon\logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -92,6 +93,7 @@
 		<None Remove="Astra\x64\Plugins\openni_sensor.dll" />
 		<None Remove="Astra\x64\Plugins\OrbbecBodyTracking.dll" />
 		<None Remove="Astra\x64\Plugins\orbbec_xs.dll" />
+		<None Remove="Icon\logo.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -196,6 +198,9 @@
 		</Content>
 		<Content Include="Astra\x64\Plugins\orbbec_xs.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Icon\logo.ico">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
 
