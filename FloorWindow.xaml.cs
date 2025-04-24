@@ -28,6 +28,7 @@ namespace IFLEGameLauncher
             InitializeComponent();
             organizationId = orgId;
             LoadFloors();
+            //MessageBox.Show(App.OrgId);
         }
 
         private async void LoadFloors()

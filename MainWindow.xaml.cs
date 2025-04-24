@@ -208,7 +208,7 @@ namespace IFLEGameLauncher
                 {
                    await UpdateGamePlayCount(selectedGame.Id);
 
-                    string arguments = $"--userId={App.UserId} --floorId={App.FloorId} --gameId={App.GameId}";
+                    string arguments = $"--userId={App.UserId} --floorId={App.FloorId} --gameId={App.GameId} --accessToken={App.AccessToken} --refreshToken={App.RefreshToken}";
 
                     ProcessStartInfo startInfo = new ProcessStartInfo(exePath, arguments);
                     Process.Start(startInfo);
@@ -575,5 +575,11 @@ namespace IFLEGameLauncher
             }
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var floorWindow = new FloorWindow(App.OrgId);
+            floorWindow.Show();
+            this.Close();
+        }
     }
 }

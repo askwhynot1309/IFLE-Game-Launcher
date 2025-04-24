@@ -15,18 +15,21 @@
     </Window.Background>
 
     <Grid Margin="20">
-        <TextBlock Text="Select a Floor" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="319*"/>
+            <ColumnDefinition Width="141*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Select a Floor" FontSize="22" FontWeight="Bold" Foreground="White" Margin="161,0,0,20" HorizontalAlignment="Left"/>
         <Button Content="← Back"
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
-        Margin="10"
         Padding="5,2"
         FontWeight="Bold"
         Foreground="White"
         Background="#3366CC"
         BorderThickness="0"
         Cursor="Hand"
-        Click="BackButton_Click"
+        Click="BackButton_Click" Height="25" Width="70"
         />
         <ListBox Name="FloorListBox"
                  Margin="0,40,0,0"
@@ -35,7 +38,7 @@
                  BorderThickness="2"
                  FontSize="16"
                  MouseDoubleClick="FloorListBox_MouseDoubleClick"
-                 HorizontalContentAlignment="Stretch">
+                 HorizontalContentAlignment="Stretch" Grid.ColumnSpan="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Margin="5" Padding="10" Background="#F5F9FF" CornerRadius="5">

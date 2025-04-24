@@ -53,6 +53,7 @@ namespace IFLEGameLauncher
         {
             if (OrganizationListBox.SelectedItem is Organization selectedOrg)
             {
+                App.OrgId = selectedOrg.Id;
                 FloorWindow floorWindow = new FloorWindow(selectedOrg.Id);
                 floorWindow.Show();
                 this.Close();

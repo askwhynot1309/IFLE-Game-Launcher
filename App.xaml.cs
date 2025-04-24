@@ -12,6 +12,7 @@ namespace IFLEGameLauncher
         public static string UserId { get; set; }
         public static string FloorId { get; set; }
         public static string GameId { get; set; }
+        public static string OrgId { get; set; }   
         static App()
         {
             string nativePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Astra", Environment.Is64BitProcess ? "x64" : "x32");
