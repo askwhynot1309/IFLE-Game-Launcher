@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using IFLEGameLauncher.Model;
 using Newtonsoft.Json;
+using IFLEGameLauncher.API;
 
 namespace IFLEGameLauncher
 {
@@ -81,7 +70,7 @@ namespace IFLEGameLauncher
                     Debug.WriteLine(content);
 
                     //string loginUrl = "http://160.187.240.95:8080/api/auth/login";
-                    string loginUrl = "https://localhost:7174/api/auth/login";
+                    string loginUrl = IFLE_API.LoginAPI;
                     HttpResponseMessage response = await client.PostAsync(loginUrl, content);
 
                     if (response.IsSuccessStatusCode)

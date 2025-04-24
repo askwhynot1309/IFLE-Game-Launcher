@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
 using IFLEGameLauncher.Model;
+using IFLEGameLauncher.API;
 
 namespace IFLEGameLauncher
 {
@@ -33,8 +34,9 @@ namespace IFLEGameLauncher
                 using HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", App.AccessToken);
+                string api_url = IFLE_API.OwnOrganizationAPI;
 
-                var response = await client.GetAsync("https://localhost:7174/api/organizations/own");
+                var response = await client.GetAsync(api_url);
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();

@@ -15,6 +15,7 @@ using OpenNISharp2;
 using System.Text.RegularExpressions;
 using IFLEGameLauncher.Model;
 using Newtonsoft.Json.Linq;
+using IFLEGameLauncher.API;
 
 namespace IFLEGameLauncher
 {
@@ -96,7 +97,8 @@ namespace IFLEGameLauncher
                         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
 
                     //string apiUrl = $"http://160.187.240.95:8080/api/game/user/{userId}/purchased";
-                    string apiUrl = $"https://localhost:7174/api/floors/{floorId}/game-package/playable";
+
+                    string apiUrl = IFLE_API.GetPlayableGamePackageAPI(floorId);
 
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
                     response.EnsureSuccessStatusCode();
@@ -450,7 +452,7 @@ namespace IFLEGameLauncher
                     client.DefaultRequestHeaders.Authorization =
                         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
 
-                    string apiUrl = $"https://localhost:7174/api/game/update-game-count/{gameId}";
+                    string apiUrl = IFLE_API.UpdateGameCountAPI(gameId);
 
                     var response = await client.PutAsync(apiUrl, null);
 
@@ -518,7 +520,7 @@ namespace IFLEGameLauncher
                         new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.AccessToken);
 
                     //get floor details api
-                    string apiUrl = $"https://localhost:7174/api/floors/{floorId}";
+                    string apiUrl = IFLE_API.GetFloorDetailsAPI(floorId);
 
                     HttpResponseMessage response = await client.GetAsync(apiUrl);
                     response.EnsureSuccessStatusCode();

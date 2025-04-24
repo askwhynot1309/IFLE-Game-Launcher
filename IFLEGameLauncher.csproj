@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="Font\" />
+    <Folder Include="GameGuide\" />
   </ItemGroup>
 
   <ItemGroup>
