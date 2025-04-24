@@ -32,7 +32,7 @@ namespace IFLEGameLauncher
             floorId = selectedFloorId;
             LoadGameData();
             selectedDownloadFolder = LoadDownloadPath();
-            DownloadPathText.Text = selectedDownloadFolder;
+            DownloadPathText.Text = "Save at: " + selectedDownloadFolder;
             CheckDeviceUri();
         }
         private static string LoadDownloadPath()

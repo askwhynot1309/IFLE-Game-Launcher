@@ -25,20 +25,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <!-- Left Sidebar for Game List -->
-        <!--<StackPanel Grid.Column="0" Background="#f0f0f0" Margin="5" Height="Auto">
-            <TextBlock Text="Game List" FontSize="20" FontWeight="Bold" Margin="10"/>
-            <ListBox x:Name="GameListBox" Height="204" SelectionChanged="GameListBox_SelectionChanged">
-                <ListBoxItem Content="Math Game" Height="50"/>
-                <ListBoxItem Content="English Game" Height="50"/>
-                <ListBoxItem Content="Run Game" Height="50"/>
-                <ListBoxItem Content="Balloon Pop Game" Height="50"/>
-            </ListBox>
-        </StackPanel>-->
         <StackPanel Grid.Column="0"
             Background="#E6EAF0"
-            Margin="19,39,1,149"
+            Margin="19,39,1,38"
             Height="Auto" Grid.RowSpan="2">
 
             <TextBlock Text="🎮 Game List"
@@ -49,7 +38,7 @@
                TextAlignment="Center"/>
 
             <ListBox x:Name="GameListBox"
-             Height="388"
+             Height="337"
              Background="White"
              BorderBrush="Transparent"
              Padding="5"
@@ -95,7 +84,12 @@
                 <ListBoxItem Content="Run Game"/>
                 <ListBoxItem Content="Balloon Pop Game"/>-->
             </ListBox>
-            <Button Content="Choose Download Location" Background="#3776A1" Height="45" Foreground="White" FontSize="16" Click="ChooseDownloadLocation_Click" Width="230">
+            <TextBlock x:Name="DownloadPathText"
+                       Text="Current Save:"
+                       Foreground="Black"
+                       FontSize="14"
+                       TextWrapping="WrapWithOverflow" Height="44"/>
+            <Button Content="Choose Download Location" Background="#3776A1" Height="45" Foreground="White" FontSize="16" Click="ChooseDownloadLocation_Click" Width="210" Margin="10">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="#4B79A1"/>
@@ -125,9 +119,35 @@
                     </Style>
                 </Button.Style>
             </Button>
+            <StackPanel Orientation="Horizontal" Margin="1,10,10,0" HorizontalAlignment="Left" Width="230">
+                <Button Content="Device Check" Margin="10,10,10,0" Grid.Row="1" Width="93" Height="31" Click="DeviceCheck_Click"/>
+                <Button Content="Log Out" Background="IndianRed" Margin="10,10,10,0" Grid.Row="1" VerticalAlignment="Top" Width="93" Height="30" Click="LogOut_Click" RenderTransformOrigin="0.5,0.5">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="0"/>
+                            <RotateTransform/>
+                            <TranslateTransform Y="0"/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+
+            <TextBox HorizontalAlignment="Left" Margin="10,5" Grid.Row="1" TextWrapping="Wrap" Text="" Width="210" Height="31" x:Name="DeviceGUID" Grid.ColumnSpan="2" />
 
         </StackPanel>
-
+        <Button Content="← Back"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="18,10,0,0"
+                Padding="5,2"
+                FontWeight="Bold"
+                Foreground="White"
+                Background="#3366CC"
+                BorderThickness="0"
+                Cursor="Hand" Height="25" Width="70" Click="Button_Click"
+                />
 
         <!-- Main Content Area -->
         <StackPanel Grid.Column="1" Margin="10">
@@ -355,34 +375,6 @@
             <TextBlock x:Name="GameDescription" Text="Select a game to see more details..." FontSize="16" TextWrapping="Wrap" Height="100" Foreground="White"/>
 
         </StackPanel>
-        <TextBlock x:Name="DownloadPathText"
-           Text="Current Save:"
-           Foreground="Black"
-           FontSize="14"
-           Margin="22,0,4,220"
-           TextWrapping="WrapWithOverflow" Grid.Row="1"/>
-        <Button Content="Device Check" HorizontalAlignment="Left" Margin="19,157,0,0" Grid.Row="1" VerticalAlignment="Top" Width="115" Height="31" Click="DeviceCheck_Click"/>
-        <TextBox HorizontalAlignment="Left" Margin="142,157,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="234" Height="31" x:Name="DeviceGUID" Grid.ColumnSpan="2" />
-        <Button Content="Log Out" Background="IndianRed" HorizontalAlignment="Left" Margin="19,193,0,0" Grid.Row="1" VerticalAlignment="Top" Width="115" Height="30" Click="LogOut_Click" RenderTransformOrigin="0.5,0.5">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="0"/>
-                    <RotateTransform/>
-                    <TranslateTransform Y="0"/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
-        <Button Content="← Back"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="18,10,0,0"
-                Padding="5,2"
-                FontWeight="Bold"
-                Foreground="White"
-                Background="#3366CC"
-                BorderThickness="0"
-                Cursor="Hand" Height="25" Width="70" Click="Button_Click"
-                />
+
     </Grid>
 </Window>
