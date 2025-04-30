@@ -19,7 +19,7 @@
             <ColumnDefinition Width="319*"/>
             <ColumnDefinition Width="141*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Select a Floor" FontSize="22" FontWeight="Bold" Foreground="White" Margin="161,0,0,20" HorizontalAlignment="Left"/>
+        <TextBlock Text="     Chọn sàn" FontSize="22" FontWeight="Bold" Foreground="White" Margin="161,0,0,20" HorizontalAlignment="Left" Width="148"/>
         <Button Content="← Back"
         HorizontalAlignment="Left"
         VerticalAlignment="Top"

@@ -53,7 +53,7 @@ namespace IFLEGameLauncher
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading floors: {ex.Message}");
+                MessageBox.Show($"Lỗi khi load thông tin interactive floor {ex.Message}");
             }
         }
 

@@ -47,7 +47,7 @@ namespace IFLEGameLauncher
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading organizations: {ex.Message}");
+                MessageBox.Show($"Lỗi khi lấy thông tin các tổ chức: {ex.Message}");
             }
         }
 

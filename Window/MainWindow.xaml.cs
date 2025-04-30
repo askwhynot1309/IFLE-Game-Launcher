@@ -33,7 +33,7 @@ namespace IFLEGameLauncher
             floorId = selectedFloorId;
             LoadGameData();
             selectedDownloadFolder = LoadDownloadPath();
-            DownloadPathText.Text = "Save at: " + selectedDownloadFolder;
+            DownloadPathText.Text = "Lưu tại: " + selectedDownloadFolder;
             CheckDeviceUri();
         }
         private static string LoadDownloadPath()
@@ -53,7 +53,7 @@ namespace IFLEGameLauncher
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading settings: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Lỗi khi lấy vị trí tải game", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             // If no valid path is found, return the default
@@ -111,7 +111,7 @@ namespace IFLEGameLauncher
 
                     if (gameList == null)
                     {
-                        MessageBox.Show("No games found for the selected floor.");
+                        MessageBox.Show("Không có game nào cho sàn tương tác này");
                         return;
                     }
                     games = gameList;    
@@ -122,7 +122,7 @@ namespace IFLEGameLauncher
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error fetching game data: {ex.Message}");
+                MessageBox.Show($"Lỗi khi lấy thông tin game {ex.Message}");
             }
         }
 
@@ -186,13 +186,14 @@ namespace IFLEGameLauncher
         private async void PlayGame_Click(object sender, RoutedEventArgs e)
         {
             bool checkFloorDevice = await CheckFloorDeviceUri();
-            if (checkFloorDevice != true) {
+            if (checkFloorDevice != true)
+            {
                 return;
             }
 
             if (string.IsNullOrEmpty(selectedDownloadFolder))
             {
-                MessageBox.Show("Please choose a download folder first!", "No Folder Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Hãy chọn vị trí tải game", "No Folder Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -217,7 +218,7 @@ namespace IFLEGameLauncher
                 }
                 else
                 {
-                    MessageBox.Show("Game not found! Please download it first.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Game không tìm thấy, vui lòng tải game trước", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     DownloadButton.Visibility = Visibility.Visible;
                     UninstallButton.Visibility = Visibility.Hidden;
                     PlayButton.Visibility = Visibility.Hidden;
@@ -239,7 +240,7 @@ namespace IFLEGameLauncher
         {
             if (string.IsNullOrEmpty(selectedDownloadFolder))
             {
-                MessageBox.Show("Please choose a download folder first!", "No Folder Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Hãy chọn vị trí tải game", "Hãy chọn vị trí tải game", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -255,7 +256,7 @@ namespace IFLEGameLauncher
 
                 if (string.IsNullOrEmpty(downloadUrl))
                 {
-                    MessageBox.Show("Download URL not found for the selected game.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Không tìm thấy đường dẫn tải game", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
@@ -315,11 +316,11 @@ namespace IFLEGameLauncher
                 File.Delete(zipPath);
                 File.WriteAllText(Path.Combine(gameFolder, "version.txt"), latestVersion);
 
-                MessageBox.Show($"{gameName} downloaded and extracted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"{gameName} tải và giải nén thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to download {gameName}. Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Tải game thất bại {gameName}. Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -348,7 +349,7 @@ namespace IFLEGameLauncher
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error extracting ZIP: {ex.Message}", "Extraction Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Lỗi khi giải nén {ex.Message}", "Extraction Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -365,7 +366,7 @@ namespace IFLEGameLauncher
             {
                 selectedDownloadFolder = dialog.FileName;
                 SaveDownloadPath(selectedDownloadFolder);
-                MessageBox.Show($"Download folder set to:\n{selectedDownloadFolder}", "Download Location", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Vị trí tải về là:\n{selectedDownloadFolder}", "Download Location", MessageBoxButton.OK, MessageBoxImage.Information);
                 DownloadPathText.Text = $"{selectedDownloadFolder}";
             }
         }
@@ -403,7 +404,7 @@ namespace IFLEGameLauncher
                 if (Directory.Exists(gameFolder))
                 {
                     MessageBoxResult result = MessageBox.Show(
-                        $"Are you sure you want to uninstall {gameName}?",
+                        $"Bạn có chắc việc xóa {gameName}?",
                         "Confirm Uninstall",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Warning);
@@ -413,20 +414,20 @@ namespace IFLEGameLauncher
                         try
                         {
                             Directory.Delete(gameFolder, true);
-                            MessageBox.Show($"{gameName} has been uninstalled.", "Uninstall Complete", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show($"{gameName} đã được xóa.", "Uninstall Complete", MessageBoxButton.OK, MessageBoxImage.Information);
 
                             //UninstallButton.Visibility = Visibility.Collapsed;
                             GameListBox_SelectionChanged(null, null);
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show($"Failed to uninstall {gameName}. Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show($"Tải thất bại {gameName}. Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Game is not installed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Game chưa được tải", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     UninstallButton.Visibility = Visibility.Collapsed;
                 }
             }
@@ -541,7 +542,7 @@ namespace IFLEGameLauncher
                         }
                         else
                         {
-                            MessageBox.Show("Your device number is not matching the one registered for this floor !");
+                            MessageBox.Show("Thiết bị của bạn không trùng khớp với thiết bị đã đăng ký cho sàn tương tác này");
                             return false;
                         }
                     }
@@ -549,7 +550,7 @@ namespace IFLEGameLauncher
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error getting device: {ex.Message}");
+                MessageBox.Show($"Lỗi khi ghi nhận thiết bị {ex.Message}");
                 return false;
             }
             return false;
@@ -557,7 +558,7 @@ namespace IFLEGameLauncher
 
         private void LogOut_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show("Are you sure you want to log out?", "Confirm Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show("Đăng xuất khỏi ứng dụng", "Confirm Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {

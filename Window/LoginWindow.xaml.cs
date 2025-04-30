@@ -26,13 +26,13 @@ namespace IFLEGameLauncher
             // Basic Validation
             if (!IsValidEmail(email))
             {
-                MessageBox.Show("Please enter a valid email address.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Vui lòng nhập địa chỉ email hợp lệ", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (password.Length < 6)
             {
-                MessageBox.Show("Password must be at least 6 characters long.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Mật khẩu phải ít nhất 6 ký tự", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -50,7 +50,7 @@ namespace IFLEGameLauncher
             }
             else
             {
-                MessageBox.Show("Login failed. Please check your input.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Đăng nhập thất bại vui lòng kiểm tra thông tin của bạn", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private async Task<bool> PerformLogin(string email, string password)
@@ -96,7 +96,7 @@ namespace IFLEGameLauncher
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Login error: " + ex.Message);
+                MessageBox.Show("Đăng nhập thất bại: " + ex.Message);
                 return false;
             }
         }

@@ -30,7 +30,7 @@
             Margin="19,39,1,38"
             Height="Auto" Grid.RowSpan="2">
 
-            <TextBlock Text="🎮 Game List"
+            <TextBlock Text="🎮 Danh sách game"
                FontSize="22"
                FontWeight="Bold"
                Foreground="#283E51"
@@ -89,7 +89,7 @@
                        Foreground="Black"
                        FontSize="14"
                        TextWrapping="WrapWithOverflow" Height="44"/>
-            <Button Content="Choose Download Location" Background="#3776A1" Height="45" Foreground="White" FontSize="16" Click="ChooseDownloadLocation_Click" Width="210" Margin="10">
+            <Button Content="Chọn nơi tải game" Background="#3776A1" Height="45" Foreground="White" FontSize="16" Click="ChooseDownloadLocation_Click" Width="210" Margin="10">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="#4B79A1"/>
@@ -121,7 +121,7 @@
             </Button>
             <StackPanel Orientation="Horizontal" Margin="1,10,10,0" HorizontalAlignment="Left" Width="230">
                 <Button Content="Device Check" Margin="10,10,10,0" Grid.Row="1" Width="93" Height="31" Click="DeviceCheck_Click"/>
-                <Button Content="Log Out" Background="IndianRed" Margin="10,10,10,0" Grid.Row="1" VerticalAlignment="Top" Width="93" Height="30" Click="LogOut_Click" RenderTransformOrigin="0.5,0.5">
+                <Button Content="Đăng xuất" Background="IndianRed" Margin="10,10,10,0" Grid.Row="1" VerticalAlignment="Top" Width="93" Height="30" Click="LogOut_Click" RenderTransformOrigin="0.5,0.5">
                     <Button.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>

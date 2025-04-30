@@ -14,7 +14,7 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid Margin="20">
-        <TextBlock Text="Choose Your Organization" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+        <TextBlock Text="Chọn Tổ Chức" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,20" HorizontalAlignment="Center"/>
 
         <ListBox Name="OrganizationListBox"
                  Margin="0,40,0,0"
