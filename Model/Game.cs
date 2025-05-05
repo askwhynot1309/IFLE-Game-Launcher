@@ -47,7 +47,7 @@ public class GameVersion
 {
     public string Version { get; set; }
     public string Description { get; set; }
-    public DateTime VersionDate { get; set; }
+    public DateTime ReleaseDate { get; set; }
 }
 
 class Settings

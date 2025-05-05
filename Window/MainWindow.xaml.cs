@@ -151,14 +151,14 @@ namespace IFLEGameLauncher
                         GameImage.Source = null;
                     }
                     string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
-                        $"Version: {v.Version} ({v.VersionDate:yyyy-MM-dd})"
+                        $"Version: {v.Version} ({v.ReleaseDate})"
                     ));
                     GameDescription.Text = selectedGame.Description + "\n" + versionInfo;
 
                     string gameFolder = Path.Combine(selectedDownloadFolder, selectedGameTitle.Replace(" ", ""));
                     string localVersion = GetLocalGameVersion(gameFolder);
                     //MessageBox.Show(localVersion);
-                    string latestVersion = selectedGame.Versions.OrderByDescending(v => v.VersionDate).FirstOrDefault()?.Version ?? "1.0";
+                    string latestVersion = selectedGame.Versions.OrderByDescending(v => v.ReleaseDate).FirstOrDefault()?.Version ?? "1.0";
 
                     if (Directory.Exists(gameFolder))
                     {
@@ -250,7 +250,7 @@ namespace IFLEGameLauncher
                 var selectedGame = games.FirstOrDefault(g => g.Title == gameName);
                 string downloadUrl = selectedGame.DownloadUrl;
                 string gameFolder = Path.Combine(selectedDownloadFolder, gameName.Replace(" ", ""));
-                string latestVersion = selectedGame.Versions.OrderByDescending(v => v.VersionDate).FirstOrDefault()?.Version;
+                string latestVersion = selectedGame.Versions.OrderByDescending(v => v.ReleaseDate).FirstOrDefault()?.Version;
 
                 //MessageBox.Show($"Game will be download to: {selectedDownloadFolder}");
 
