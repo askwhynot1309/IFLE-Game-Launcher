@@ -20,7 +20,7 @@
             <ColumnDefinition Width="141*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Text="     Chọn sàn" FontSize="22" FontWeight="Bold" Foreground="White" Margin="161,0,0,20" HorizontalAlignment="Left" Width="148"/>
-        <Button Content="← Back"
+        <Button Content="← Quay lại"
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
         Padding="5,2"
