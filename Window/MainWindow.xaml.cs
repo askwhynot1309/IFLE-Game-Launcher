@@ -492,6 +492,12 @@ namespace IFLEGameLauncher
 
                 var device = devices.FirstOrDefault();
                 string uri = device.Uri;
+                
+                if (String.IsNullOrEmpty(uri))
+                {
+                    MessageBox.Show("Không ghi nhận được camera, vui lòng input camera", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
                 var match = Regex.Match(uri, @"{(?<guid>[0-9a-fA-F\-]{36})}");
 
                 if (match.Success)
