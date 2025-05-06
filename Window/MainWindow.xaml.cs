@@ -484,6 +484,7 @@ namespace IFLEGameLauncher
         {
             try
             {
+                OpenNI.Shutdown();
                 OpenNI.Initialize();
 
                 var devices = OpenNI.GetDevices();
