@@ -150,9 +150,12 @@ namespace IFLEGameLauncher
                     {
                         GameImage.Source = null;
                     }
-                    string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
-                        $"Version: {v.Version} ({v.ReleaseDate})"
-                    ));
+                    //string versionInfo = string.Join("\n", selectedGame.Versions.Select(v =>
+                    //    $"Version: {v.Version} ({v.ReleaseDate})"
+                    //));
+                    string versionInfo = string.Join("\n", selectedGame.Versions
+                                                .OrderByDescending(v => Version.TryParse(v.Version, out var ver) ? ver : new Version(0, 0))
+                                                .Select(v => $"Version: {v.Version} ({v.ReleaseDate})"));
                     GameDescription.Text = selectedGame.Description + "\n" + versionInfo;
 
                     string gameFolder = Path.Combine(selectedDownloadFolder, selectedGameTitle.Replace(" ", ""));

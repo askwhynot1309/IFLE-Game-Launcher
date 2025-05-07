@@ -88,7 +88,7 @@
                        Text="Current Save:"
                        Foreground="Black"
                        FontSize="14"
-                       TextWrapping="WrapWithOverflow" Height="44"/>
+                       TextWrapping="WrapWithOverflow" Height="44" Width="205"/>
             <Button Content="Chọn nơi tải game" Background="#3776A1" Height="45" Foreground="White" FontSize="16" Click="ChooseDownloadLocation_Click" Width="210" Margin="10">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
@@ -134,7 +134,7 @@
             </StackPanel>
 
 
-            <TextBox HorizontalAlignment="Left" Margin="10,5" Grid.Row="1" TextWrapping="Wrap" Text="" Width="210" Height="31" x:Name="DeviceGUID" Grid.ColumnSpan="2" />
+            <TextBox HorizontalAlignment="Left" Margin="10,5" Grid.Row="1" TextWrapping="Wrap" Text="" Width="210" Height="40" x:Name="DeviceGUID" Grid.ColumnSpan="2" />
 
         </StackPanel>
         <Button Content="← Quay lại"
@@ -372,7 +372,7 @@
 
 
             </StackPanel>
-            <TextBlock x:Name="GameDescription" Text="Select a game to see more details..." FontSize="16" TextWrapping="Wrap" Height="100" Foreground="White"/>
+            <TextBlock x:Name="GameDescription" Text="Select a game to see more details..." FontSize="16" TextWrapping="Wrap" Height="277" Foreground="White"/>
 
         </StackPanel>
 
