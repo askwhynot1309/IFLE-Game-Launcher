@@ -34,6 +34,9 @@ namespace IFLEGameLauncher
             LoadGameData();
             selectedDownloadFolder = LoadDownloadPath();
             DownloadPathText.Text = "Lưu tại: " + selectedDownloadFolder;
+            App.FloorLength = 1.2f;
+            App.FloorWidth = 1.6f;
+            App.CameraToFloor = 1.8f;
             CheckDeviceUri();
         }
         private static string LoadDownloadPath()

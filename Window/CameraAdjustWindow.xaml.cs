@@ -24,33 +24,75 @@ namespace IFLEGameLauncher
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            FloorLength.Text = App.FloorLength.ToString();
+            FloorWidth.Text = App.FloorWidth.ToString();
+            CameraToFloor.Text = App.CameraToFloor.ToString();
+        }
+
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            float parsedFloorLength = 1.2f;
-            float parsedFloorWidth = 1.6f;
-            float parsedCameraToFloor = 1.8f;
+            float parsedFloorLength;
+            float parsedFloorWidth;
+            float parsedCameraToFloor;
 
-            bool isLengthParsed = !string.IsNullOrWhiteSpace(FloorLength.Text) &&
-                      float.TryParse(FloorLength.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorLength);
-
-            bool isWidthParsed = !string.IsNullOrWhiteSpace(FloorWidth.Text) &&
-                                 float.TryParse(FloorWidth.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorWidth);
-
-            bool isCameraParsed = !string.IsNullOrWhiteSpace(CameraToFloor.Text) &&
-                                  float.TryParse(CameraToFloor.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedCameraToFloor);
-
-            if (isLengthParsed && isWidthParsed && isCameraParsed)
+            if (string.IsNullOrWhiteSpace(FloorLength.Text) ||
+                !float.TryParse(FloorLength.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorLength))
             {
-                App.FloorLength = parsedFloorLength;
-                App.FloorWidth = parsedFloorWidth;
-                App.CameraToFloor = parsedCameraToFloor;
+                MessageBox.Show("Chiều dài sàn không hợp lệ.");
+                FloorLength.Focus();
+                return;
             }
-            else
+
+            if (string.IsNullOrWhiteSpace(FloorWidth.Text) ||
+                !float.TryParse(FloorWidth.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorWidth))
             {
-                MessageBox.Show("Vui lòng nhập dữ liệu hợp lệ vd: 2 2.1");
+                MessageBox.Show("Chiều rộng sàn không hợp lệ.");
+                FloorWidth.Focus();
+                return;
             }
+
+            if (string.IsNullOrWhiteSpace(CameraToFloor.Text) ||
+                !float.TryParse(CameraToFloor.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedCameraToFloor))
+            {
+                MessageBox.Show("Chiều cao camera không hợp lệ.");
+                CameraToFloor.Focus();
+                return;
+            }
+
+            if (parsedCameraToFloor < 1.8f || parsedCameraToFloor > 2.7f)
+            {
+                MessageBox.Show("Khoảng cách từ sàn đến camera phải nằm trong khoảng từ 1.8 đến 2.7 mét.");
+                CameraToFloor.Focus();
+                return;
+            }
+
+            if (parsedCameraToFloor + parsedFloorLength > 3.7f)
+            {
+                MessageBox.Show("Tổng chiều dài sàn và khoảng cách từ camera đến sàn không được vượt quá 3.7 mét.");
+                FloorLength.Focus();
+                return;
+            }
+
+            if (parsedFloorWidth > 1.8f)
+            {
+                MessageBox.Show("Chiều rộng sàn không được lớn hơn 1.8 mét.");
+                FloorWidth.Focus();
+                return;
+            }
+
+
+
+            App.FloorLength = parsedFloorLength;
+            App.FloorWidth = parsedFloorWidth;
+            App.CameraToFloor = parsedCameraToFloor;
 
             this.Close();
         }
+
     }
 }
+
+
