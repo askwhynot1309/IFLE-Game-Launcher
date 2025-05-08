@@ -11,7 +11,7 @@ namespace IFLEGameLauncher.API
     {
         //public static string BaseUrl = "https://localhost:7174/api";
         public static string BaseUrl = "https://ifle-api.fusdeploy.site/api";
-        public static string LoginAPI = $"{BaseUrl}/auth/login";
+        public static string LoginAPI = $"{BaseUrl}/auth/login-desktop-app";
         public static string OwnOrganizationAPI = $"{BaseUrl}/organizations/own";
         public static string GetPlayableGamePackageAPI(string floorId)
         {
