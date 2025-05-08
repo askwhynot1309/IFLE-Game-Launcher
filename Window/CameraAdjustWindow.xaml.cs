@@ -26,7 +26,9 @@ namespace IFLEGameLauncher
         }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            float parsedFloorLength, parsedFloorWidth, parsedCameraToFloor;
+            float parsedFloorLength = 1.2f;
+            float parsedFloorWidth = 1.6f;
+            float parsedCameraToFloor = 1.8f;
 
             bool isLengthParsed = float.TryParse(FloorLength.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorLength);
             bool isWidthParsed = float.TryParse(FloorWidth.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorWidth);
