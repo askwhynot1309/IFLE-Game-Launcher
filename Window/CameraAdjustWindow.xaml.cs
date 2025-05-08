@@ -30,9 +30,14 @@ namespace IFLEGameLauncher
             float parsedFloorWidth = 1.6f;
             float parsedCameraToFloor = 1.8f;
 
-            bool isLengthParsed = float.TryParse(FloorLength.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorLength);
-            bool isWidthParsed = float.TryParse(FloorWidth.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorWidth);
-            bool isCameraParsed = float.TryParse(CameraToFloor.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedCameraToFloor);
+            bool isLengthParsed = !string.IsNullOrWhiteSpace(FloorLength.Text) &&
+                      float.TryParse(FloorLength.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorLength);
+
+            bool isWidthParsed = !string.IsNullOrWhiteSpace(FloorWidth.Text) &&
+                                 float.TryParse(FloorWidth.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorWidth);
+
+            bool isCameraParsed = !string.IsNullOrWhiteSpace(CameraToFloor.Text) &&
+                                  float.TryParse(CameraToFloor.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedCameraToFloor);
 
             if (isLengthParsed && isWidthParsed && isCameraParsed)
             {
