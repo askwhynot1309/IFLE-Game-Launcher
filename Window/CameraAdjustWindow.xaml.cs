@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,20 +28,21 @@ namespace IFLEGameLauncher
         {
             float parsedFloorLength, parsedFloorWidth, parsedCameraToFloor;
 
-            if (float.TryParse(FloorLength.Text, out parsedFloorLength) &&
-                float.TryParse(FloorWidth.Text, out parsedFloorWidth) &&
-                float.TryParse(CameraToFloor.Text, out parsedCameraToFloor))
+            bool isLengthParsed = float.TryParse(FloorLength.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorLength);
+            bool isWidthParsed = float.TryParse(FloorWidth.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedFloorWidth);
+            bool isCameraParsed = float.TryParse(CameraToFloor.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedCameraToFloor);
+
+            if (isLengthParsed && isWidthParsed && isCameraParsed)
             {
                 App.FloorLength = parsedFloorLength;
                 App.FloorWidth = parsedFloorWidth;
                 App.CameraToFloor = parsedCameraToFloor;
-                var c = App.FloorLength;
-                MessageBox.Show(c.ToString());
             }
             else
             {
-                MessageBox.Show("Invalid input. Please enter valid float numbers.");
+                MessageBox.Show("Vui lòng nhập dữ liệu hợp lệ vd: 2 2.1");
             }
+
             this.Close();
         }
     }

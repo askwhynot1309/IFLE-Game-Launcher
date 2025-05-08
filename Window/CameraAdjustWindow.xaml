@@ -11,13 +11,13 @@
                 BorderBrush="#ccc" BorderThickness="1" >
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" >
 
-                <TextBlock Text="Chiều rộng sàn (m):" Margin="0,0,0,5"/>
+                <TextBlock Text="Chiều rộng sàn:" Margin="0,0,0,5"/>
                 <TextBox x:Name="FloorWidth" Margin="0,0,0,10"/>
 
-                <TextBlock Text="Chiều dài sàn (m):" Margin="0,0,0,5"/>
+                <TextBlock Text="Chiều dài sàn:" Margin="0,0,0,5"/>
                 <TextBox x:Name="FloorLength" Margin="0,0,0,10"/>
 
-                <TextBlock Text="Khoảng cách cam tới sàn (m):" Margin="0,0,0,5"/>
+                <TextBlock Text="Khoảng cách camera tới sàn:" Margin="0,0,0,5"/>
                 <TextBox x:Name="CameraToFloor" Margin="0,0,0,20"/>
 
                 <Button Content="Lưu"
