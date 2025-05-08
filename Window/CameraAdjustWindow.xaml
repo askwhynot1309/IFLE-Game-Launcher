@@ -4,7 +4,8 @@
         Title="Camera Adjustment"
         Height="300" Width="350"
         WindowStartupLocation="CenterScreen"
-        Background="#f0f0f0">
+        Background="#f0f0f0"
+        Loaded="Window_Loaded">
 
     <Grid>
         <Border CornerRadius="10" Background="White" Padding="20" Margin="20" 
