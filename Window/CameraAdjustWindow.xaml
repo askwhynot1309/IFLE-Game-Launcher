@@ -1,17 +1,37 @@
 ﻿<Window x:Class="IFLEGameLauncher.CameraAdjustWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:IFLEGameLauncher"
-        mc:Ignorable="d"
-        Title="CameraAdjustWindow" Height="300" Width="300">
-    <Grid Background="LightGray">
-         
-        <TextBox x:Name="FloorWidth" TextWrapping="Wrap" Text="Chiều rộng sàn" Margin="84,41,84,210"/>
-        <TextBox x:Name="CameraToFloor" TextWrapping="Wrap" Text="Khoảng cách cam tới sàn" Margin="84,150,84,101"/>
-        <TextBox x:Name="FloorLength" TextWrapping="Wrap" Text="Chiều dài sàn" Margin="84,94,84,157"/>
-        <Button Content="Button" Margin="84,203,84,25" Click="SaveButton_Click"/>
+        Title="Camera Adjustment"
+        Height="300" Width="350"
+        WindowStartupLocation="CenterScreen"
+        Background="#f0f0f0">
 
+    <Grid>
+        <Border CornerRadius="10" Background="White" Padding="20" Margin="20" 
+                BorderBrush="#ccc" BorderThickness="1" >
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" >
+
+                <TextBlock Text="Chiều rộng sàn (m):" Margin="0,0,0,5"/>
+                <TextBox x:Name="FloorWidth" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Chiều dài sàn (m):" Margin="0,0,0,5"/>
+                <TextBox x:Name="FloorLength" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Khoảng cách cam tới sàn (m):" Margin="0,0,0,5"/>
+                <TextBox x:Name="CameraToFloor" Margin="0,0,0,20"/>
+
+                <Button Content="Lưu"
+                        Width="100"
+                        HorizontalAlignment="Center"
+                        Click="SaveButton_Click"
+                        Background="#007ACC"
+                        Foreground="White"
+                        Padding="5"
+                        BorderBrush="#005A9E"
+                        BorderThickness="1"
+                        FontWeight="Bold"
+                        Cursor="Hand"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
