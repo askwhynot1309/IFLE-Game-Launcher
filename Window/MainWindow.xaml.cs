@@ -76,20 +76,20 @@ namespace IFLEGameLauncher
         {
             try
             {
-                var handler = new JwtSecurityTokenHandler();
-                var jwtToken = handler.ReadJwtToken(App.AccessToken);
+                //var handler = new JwtSecurityTokenHandler();
+                //var jwtToken = handler.ReadJwtToken(App.AccessToken);
 
-                var userIdClaim = jwtToken.Claims.FirstOrDefault(claim =>
-                    claim.Type == "userId" || claim.Type.EndsWith("/identity/claims/nameidentifier"));
+                //var userIdClaim = jwtToken.Claims.FirstOrDefault(claim =>
+                //    claim.Type == "userId" || claim.Type.EndsWith("/identity/claims/nameidentifier"));
 
-                string? userId = userIdClaim?.Value;
-                App.UserId = userId;
+                //string? userId = userIdClaim?.Value;
+                //App.UserId = userId;
 
-                if (string.IsNullOrEmpty(userId))
-                {
-                    Debug.WriteLine("Failed to get user ID from access token.");
-                    return;
-                }
+                //if (string.IsNullOrEmpty(userId))
+                //{
+                //    Debug.WriteLine("Failed to get user ID from access token.");
+                //    return;
+                //}
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -573,6 +573,7 @@ namespace IFLEGameLauncher
 
             if (result == MessageBoxResult.Yes)
             {
+                LogOutActiveUser(App.UserId);
                 // Clear saved global context
                 App.AccessToken = null;
                 App.RefreshToken = null;
@@ -594,6 +595,24 @@ namespace IFLEGameLauncher
             var floorWindow = new FloorWindow(App.OrgId);
             floorWindow.Show();
             this.Close();
+        }
+
+        private async Task<bool> LogOutActiveUser(string userId)
+        {
+            using (var client = new HttpClient())
+            {
+                var url = IFLE_API.LogOut(userId);
+                try
+                {
+                    var response = await client.PostAsync(url, null);
+                    response.EnsureSuccessStatusCode();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
         }
     }
 }

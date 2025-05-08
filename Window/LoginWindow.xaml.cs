@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using IFLEGameLauncher.Model;
 using Newtonsoft.Json;
 using IFLEGameLauncher.API;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace IFLEGameLauncher
 {
@@ -50,7 +51,7 @@ namespace IFLEGameLauncher
             }
             else
             {
-                MessageBox.Show("Đăng nhập thất bại vui lòng kiểm tra thông tin của bạn", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Đăng nhập thất bại", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private async Task<bool> PerformLogin(string email, string password)
@@ -85,7 +86,28 @@ namespace IFLEGameLauncher
                         App.AccessToken = accessToken;
                         App.RefreshToken = refreshToken;
 
+                        var handler = new JwtSecurityTokenHandler();
+                        var jwtToken = handler.ReadJwtToken(App.AccessToken);
 
+                        var userIdClaim = jwtToken.Claims.FirstOrDefault(claim =>
+                            claim.Type == "userId" || claim.Type.EndsWith("/identity/claims/nameidentifier"));
+
+                        string? userId = userIdClaim?.Value;
+                        App.UserId = userId;
+
+                        if (string.IsNullOrEmpty(userId))
+                        {
+                            Debug.WriteLine("Failed to get user ID from access token.");
+                        }
+                        bool checkActiveUser = await IsUserActiveAsync(userId);
+                        if (checkActiveUser)
+                        {
+                            MessageBox.Show("Đã có người dùng khác đăng nhập bằng tài khoản này");
+                            return false;
+                        } else
+                        {
+                            await MarkUserActiveAsync(userId);
+                        }
                         return true;
                     }
                     else
@@ -113,5 +135,46 @@ namespace IFLEGameLauncher
                 return false;
             }
         }
+
+        private async Task<bool> IsUserActiveAsync(string userId)
+        {
+            using (var client = new HttpClient())
+            {
+                string url = IFLE_API.CheckActiveUser(userId);
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    string json = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<ActiveUserResponse>(json);
+
+                    return result?.IsActive ?? false;
+                }
+                catch (Exception ex)
+                {
+                    return false; 
+                }
+            }
+        }
+
+        private async Task<bool> MarkUserActiveAsync(string userId)
+        {
+            using (var client = new HttpClient())
+            {
+                var url = IFLE_API.ActiveUser(userId);
+                try
+                {
+                    var response = await client.PostAsync(url, null);
+                    response.EnsureSuccessStatusCode();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
     }
 }

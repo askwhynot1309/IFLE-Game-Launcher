@@ -2,6 +2,7 @@
 using System.Data;
 using System.IO;
 using System.Windows;
+using IFLEGameLauncher.API;
 
 namespace IFLEGameLauncher
 {
@@ -28,6 +29,10 @@ namespace IFLEGameLauncher
 
         protected override void OnExit(ExitEventArgs e)
         {
+            if (!string.IsNullOrEmpty(App.UserId))
+            {
+                UserLogOutHelper.LogOutActiveUser(App.UserId).GetAwaiter().GetResult();
+            }
             base.OnExit(e);
 
             Astra.Context.Terminate();

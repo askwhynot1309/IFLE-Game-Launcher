@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IFLEGameLauncher.Model;
 
 namespace IFLEGameLauncher.API
 {
@@ -31,5 +32,21 @@ namespace IFLEGameLauncher.API
         {
             return $"{BaseUrl}/organizations/{organizationId}/floors";
         }
+
+        public static string CheckActiveUser(string userId)
+        {
+            return $"{BaseUrl}/active-user/check-active?userId={userId}";
+        }
+
+        public static string LogOut(string userId)
+        {
+            return $"{BaseUrl}/active-user/logout?userId={userId}";
+        }
+
+        public static string ActiveUser(string userId)
+        {
+            return $"{BaseUrl}/active-user?userId={userId}";
+        }
+
     }
 }
