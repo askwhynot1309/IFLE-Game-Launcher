@@ -375,6 +375,17 @@
             <TextBlock x:Name="GameDescription" Text="Select a game to see more details..." FontSize="16" TextWrapping="Wrap" Height="277" Foreground="White"/>
 
         </StackPanel>
+        <Button Content="Chỉnh camera"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Margin="108,10,0,0"
+            Padding="5,2"
+            FontWeight="Bold"
+            Foreground="White"
+            Background="#3366CC"
+            BorderThickness="0"
+            Cursor="Hand" Height="25" Width="70" Click="Camera_Adjust"
+                />
 
     </Grid>
 </Window>

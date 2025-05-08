@@ -214,7 +214,7 @@ namespace IFLEGameLauncher
                 {
                    await UpdateGamePlayCount(selectedGame.Id);
 
-                    string arguments = $"--userId={App.UserId} --floorId={App.FloorId} --gameId={App.GameId} --accessToken={App.AccessToken} --refreshToken={App.RefreshToken}";
+                    string arguments = $"--userId={App.UserId} --floorId={App.FloorId} --gameId={App.GameId} --accessToken={App.AccessToken} --refreshToken={App.RefreshToken}  --floorWidth={App.FloorWidth} --floorLength={App.FloorLength} --cameraToFloor={App.CameraToFloor}";
 
                     ProcessStartInfo startInfo = new ProcessStartInfo(exePath, arguments);
                     Process.Start(startInfo);
@@ -613,6 +613,12 @@ namespace IFLEGameLauncher
                     return false;
                 }
             }
+        }
+
+        private void Camera_Adjust(object sender, RoutedEventArgs e)
+        {
+            CameraAdjustWindow cameraAdjustWindow = new CameraAdjustWindow();
+            cameraAdjustWindow.Show();
         }
     }
 }
